@@ -1,0 +1,134 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Important note:
+% This template requires the resume.cls file to be in the same directory as the
+% .tex file. The resume.cls file provides the resume style used for structuring the
+% document.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{resume} % Use the custom resume.cls style
+
+\usepackage[left=0.75in,top=0.6in,right=0.75in,bottom=0.6in]{geometry} % Document margins
+\newcommand{\tab}[1]{\hspace{.2667\textwidth}\rlap{#1}}
+\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+\name{Allen Zifeng An} % Your name
+\address{4474 Mayflower Drive, Mississauga, Ontario} % Your address
+%\address{123 Pleasant Lane \\ City, State 12345} % Your secondary addess (optional)
+\address{(+1) 416-294-2207 \\ \texttt{anz8@mcmaster.ca}} % Your phone number and email
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	EDUCATION SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Education}
+%--copy and paste this region  if you need more--
+{\bf McMaster University} \hfill {\em September 2017 - May 2022 } 
+\\ Mechatronics Engineering, Biomedical Engineering \hfill { GPA: 3.9 } 
+\\ Bachelor of Engineering, Third Year Student
+
+
+
+%\underline{Enriched Courses:} Theory of Computation (CSC240), Data Structure Analyis (CSC265), Algebra I (MAT240)
+%
+%\underline{Completed:} C and Systems Programming (CSC209), Probability and Statistics (STA257), Computer Organization (CSC258), Software Design (CSC207) 
+%
+%\underline{Ongoing:} Operating Systems (CSC369), Numerical Methods (CSC336), Machine Learning (CSC311), Intro to ODE (MAT244)
+
+\end{rSection}
+%----------------------------------------------------------------------------------------
+%	EXPERIENCE SECTION
+%----------------------------------------------------------------------------------------
+\begin{rSection}{Experience}
+{\bf Summer Research Assistant}{, McMaster University } \hfill {\em May 2019 - August 2019}\\
+Implemented a lane detection algorithm based on hough line transform from Python OpenCV and compiled the software on the Nvidia Jetson TX2 platform. Trained a neural network model in MATLAB through ground truth labelling module to recognize car models.
+
+{\bf Software Engineering Intern}{, Union Pay, Shanghai} \hfill {\em June 2018 – August 2018}\\
+Set up pseudo-distributed hadoop system using virtual machines to implement the word count example. Exposed to the Spark Map-Reduce model and Scala.
+
+%{\bf Founder}{, Bayview Competitive Programming Club} \hfill {\em September 2016 - June 2018}\\
+%Founded the club with the goal of teaching topics in algorithms and data structures used in competitive programming, and to prepare the school team for regional competitions.
+%
+%{\bf Instructor}{, Duowei Education} \hfill {\em September 2015 - May 2018}\\
+%Taught a contest preparation class that focuses on programming fundamentals, data structures, and algorithms.
+\end{rSection}
+%--------------------------------------------------------------------------------
+%    PROJECTS
+%-----------------------------------------------------------------------------------------------
+\begin{rSection}{Projects}
+{\bf Memoritis}{, Hack The North 2019} \hfill {\em September 15, 2019}\\
+Created a platform that analyzes topics of user-uploaded videos and forms a graph between similar videos. Uses word2vec and the Google Video Intelligence API. 
+
+{\bf Stocky} \\
+Built a Python web scraper using Request and Beautiful Soup to parse HTML from Toronto Stock Change. Stored all the data in Python Sqlite3 and used SQL to create filters based on different financial factors like Market Cap, P/E ratio, etc.
+
+{\bf HQ trivia Bot} \hfill \\
+Used python OCR library to recogize trivia questions/answers on the phone screen. Called Google Search API to multi-threaded query the question and answers separately and compared the number of occurences of key words. Used Request and Beautiful Soup for requesting and parsing HTML.
+
+{\bf Gyro Spoon}{, Course Work} \\
+Designed an auto adjusting spoon that counters Parkinson patients shaking hand to prevent food spill. Developed Python scripts to process real time data from gyroscopes and contorl servo motors on Raspberry Pi. Customized mechanical casing in CAD and 3D printed. 
+
+
+
+\end{rSection}
+%--------------------------------------------------------------------------------
+%    ACTIVITIES
+%-----------------------------------------------------------------------------------------------
+\begin{rSection}{Activities}
+{\bf Teaching Assistant}{, McMaster University} \hfill {\em September 2018 - }\\
+1ZA3 -- Calculus, 1ZC3 -- Linear Algebra\\
+Conducted exam and midterm reviews in front of 200 students. Provided tailored personal tutoring and organized workshops in the university math help center. 
+
+{\bf Program Ambassador}{,  McMaster University} \hfill {\em October 2017 - }\\
+Worked collaboratively with other ambassadors to advertise and promote the integrated biomedical engineering program. Served as the go to person during university open house and interfaced with prospective students and families. \\
+
+
+%\texttt{https://jimgao.tk/notes}\\\\
+\end{rSection}
+%----------------------------------------------------------------------------------------
+%	SKILLS SECTION
+%----------------------------------------------------------------------------------------
+\begin{rSection}{Skills}
+{\bf Programming Languages }
+\\Proficient: Python, MATLAB
+\\Intermediate: Java, C/C++
+\\Basic: Javascript, Assembly
+
+{\bf Frameworks and APIs}
+\\OpenCV, NumPy, Matplotlib
+
+{\bf Other} \\
+Proficient in Ubuntu/Linux systems, 
+
+{\bf Languages} \\
+English, Mandarin, Shanghainese
+\end{rSection}
+
+\begin{rSection}{Awards and Scholarships} 
+
+{\bf Dean's Honour List}{ ,McMaster University
+} \hfill{\em May 2019} \\
+Given to degree students in the Faculty having a Cumulative Grade Point Average of 3.50 or higher.
+
+{\bf McMaster President's Entrance Scholarship}{ , McMaster University
+} \hfill{\em September 2017} \\
+Awarded to high school students with an average higher than 95.
+
+{\bf Biology Graduation Award}{ , Bronte College
+} \hfill{\em June 2017}
+\\Awarded by the high school during graduation to one student per subject.
+
+{\bf Certificate of Distinction}{ , Canadian Computing Competition, University of Waterloo
+} \hfill{\em May 2017}
+\\Ranked top 20 percent in Canada in the Competitive Programming Competition.
+
+
+
+\end{rSection}
+
+\end{document}
