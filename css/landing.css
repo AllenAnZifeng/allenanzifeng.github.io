@@ -46,7 +46,8 @@ ul.button li {
 }
 
 @media only screen and (min-width: 768px) {
-  /* For mobile phones: */
+  /* For desktops: */
+  /*Always Design for Mobile First*/
   .infoSection {
     display: flex;
     flex-direction: row;
@@ -54,12 +55,12 @@ ul.button li {
 
   #imgMe {
     height: 22em;
-    border-radius: 40%;
+    border-radius: 50%;
   }
 
   .mainDiv {
     padding: 0 1.6em;
-    max-width: 30%;
+    max-width: 100%;
   }
 
 }
