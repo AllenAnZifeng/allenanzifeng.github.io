@@ -1,7 +1,88 @@
-@charset "UTF-8";
-
-html, body {
-  margin: 0;
-  font-family: 'Kulim Park', sans-serif;
+.mainDiv {
+  padding: 1.2em;
+  max-width: 80%;
+  text-align: center;
 }
 
+
+#main {
+  background-color: black;
+  color: white;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+
+
+}
+
+.contentBody{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 1.8em;
+  margin: 0em;
+}
+
+.social-icon {
+  color: white;
+  padding: 10px;
+  font-size: 2em;
+}
+
+.social-icon:hover {
+  color: grey
+}
+
+#imgMe {
+  height: 16em;
+}
+
+ul.button {
+  text-align: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul.button li {
+  display: inline;
+}
+
+.extraPadding {
+  padding: 0.5em;
+}
+
+/*if the screen is at least 1004px wide (768 is typical)*/
+@media only screen and (min-width: 1004px) {
+  /* For desktops: */
+  /*Always Design for Mobile First*/
+  .infoSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  #imgMe {
+    height: 22em;
+    border-radius: 50%;
+  }
+
+  .mainDiv {
+    /*padding: val1 val2;  --> val1 top bottom, val2 */
+    padding: 0 1.6em;
+    max-width: 40%;
+  }
+
+}
