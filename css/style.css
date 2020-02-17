@@ -6,6 +6,7 @@
 
 #panel{
   height: 100vh;
+  min-width: 400px;
   background-color: black;
   color: white;
 }
@@ -37,7 +38,7 @@ h1 {
 }
 
 #imgMe {
-  height: 16em;
+  height: 12em;
 }
 
 ul.button {
