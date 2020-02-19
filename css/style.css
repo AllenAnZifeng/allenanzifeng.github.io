@@ -4,6 +4,13 @@
   text-align: center;
 }
 
+.button_layer{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+}
+
 #panel{
   height: 100vh;
   min-width: 400px;
@@ -30,6 +37,7 @@ h1 {
 .social-icon {
   color: white;
   padding: 10px;
+  margin: 10px;
   font-size: 2em;
 }
 
