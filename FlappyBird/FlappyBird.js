@@ -60,9 +60,9 @@ function start() {
     generatePillarID = setInterval(generatePillar, randomRange(1500,2500));
     movingPillarID = setInterval(movingPillar, 20);
 
-    document.getElementById('bird').addEventListener('click', bird.jump);
+    document.getElementById('DropBox').addEventListener('click', bird.jump);
     document.onkeypress = function (event) {
-        if (event.code === 'Space') {
+        if (event.code === 'Space' || event.which === 32) {
             bird.jump();
         }
     };
