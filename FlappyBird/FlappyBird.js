@@ -57,7 +57,7 @@ let generatePillarID;
 function start() {
     document.getElementById('start').style.display = 'none';
     birdGravityFallID = setInterval(bird.gravityFall, 20);
-    generatePillarID = setInterval(generatePillar, randomRange(1000,2000));
+    generatePillarID = setInterval(generatePillar, randomRange(1500,2500));
     movingPillarID = setInterval(movingPillar, 20);
 
     document.getElementById('bird').addEventListener('click', bird.jump);
