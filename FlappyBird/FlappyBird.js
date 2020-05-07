@@ -3,7 +3,11 @@
 
 
 const g = 0.2;
-let score =0;
+let score = 0;
+
+function restart() {
+    window.location = '/allenanzifeng.github.io/FlappyBird/FlappyBird.html?again=true';
+}
 
 function Bird(key, height = 100, speed = 0) {
     this.height = height;
@@ -21,11 +25,10 @@ function Bird(key, height = 100, speed = 0) {
 
         // head orientation
         let imagedIV = document.getElementById('image');
-        if (this.speed>0){
-            imagedIV.style.transform='rotate(-45deg)';
-        }
-        else{
-            imagedIV.style.transform='rotate(45deg)';
+        if (this.speed > 0) {
+            imagedIV.style.transform = 'rotate(-45deg)';
+        } else {
+            imagedIV.style.transform = 'rotate(45deg)';
         }
 
         //check within bounding box
@@ -37,7 +40,7 @@ function Bird(key, height = 100, speed = 0) {
         }
     };
 
-    this.death = () =>{
+    this.death = () => {
         clearInterval(birdGravityFallID);
         clearInterval(movingPillarID);
         clearInterval(generatePillarID);
@@ -45,7 +48,7 @@ function Bird(key, height = 100, speed = 0) {
         // document.getElementById('bg').style.background="none";
         // document.getElementById('bg').style.backgroundColor='red';
         document.getElementById('bird').style.backgroundColor = 'red';
-        document.getElementById('restart').style.display='block';
+        document.getElementById('restart').style.display = 'block';
     };
 
 }
@@ -56,9 +59,9 @@ let movingPillarID;
 let generatePillarID;
 
 function start() {
-    document.getElementById('start').onclick=null;
+    document.getElementById('start').onclick = restart;
     birdGravityFallID = setInterval(bird.gravityFall, 20);
-    generatePillarID = setInterval(generatePillar, randomRange(1500,2500));
+    generatePillarID = setInterval(generatePillar, randomRange(1500, 2500));
     movingPillarID = setInterval(movingPillar, 20);
 
     document.getElementById('DropBox').addEventListener('click', bird.jump);
@@ -89,12 +92,11 @@ function movingPillar() {
 
         // check collision
 
-        if (birdDiv.offsetLeft+birdDiv.clientWidth > pillars[i].offsetLeft && birdDiv.offsetLeft < pillars[i].offsetLeft+pillars[i].clientWidth){
-            if (pillars[i].id==='top' && birdDiv.offsetTop<pillars[i].clientHeight){
+        if (birdDiv.offsetLeft + birdDiv.clientWidth > pillars[i].offsetLeft && birdDiv.offsetLeft < pillars[i].offsetLeft + pillars[i].clientWidth) {
+            if (pillars[i].id === 'top' && birdDiv.offsetTop < pillars[i].clientHeight) {
                 bird.death();
-                console.log(birdDiv.offsetLeft,birdDiv.clientWidth,pillars[i].offsetLeft,pillars[i].clientWidth );
-            }
-            else if (pillars[i].id==='bottom' && windowHeight-(birdDiv.offsetTop+birdDiv.clientHeight)<pillars[i].clientHeight){
+                // console.log(birdDiv.offsetLeft, birdDiv.clientWidth, pillars[i].offsetLeft, pillars[i].clientWidth);
+            } else if (pillars[i].id === 'bottom' && windowHeight - (birdDiv.offsetTop + birdDiv.clientHeight) < pillars[i].clientHeight) {
                 bird.death();
             }
         }
@@ -102,28 +104,19 @@ function movingPillar() {
         // delete pillar, add score
 
         let scoreDiv = document.getElementById('score');
-        if (pillars[i].id==='top' && pillars[i].checked!==true && parseFloat(pillars[i].style.right) > windowWidth - birdDiv.offsetLeft){
-            score+=1;
-            scoreDiv.innerHTML = 'Score: '+score;
-            pillars[i].checked=true;
+        if (pillars[i].id === 'top' && pillars[i].checked !== true && parseFloat(pillars[i].style.right) > windowWidth - birdDiv.offsetLeft) {
+            score += 1;
+            scoreDiv.innerHTML = 'Score: ' + score;
+            pillars[i].checked = true;
         }
 
     }
-
-
-    // let topPillar = document.getElementById('top');
-    // let distanceToRight = parseFloat(topPillar.style.right);
-    // distanceToRight+=speed;
-    // topPillar.style.right = distanceToRight +'px';
-    // let bottomPillar = document.getElementById('bottom');
-    // bottomPillar.style.right=distanceToRight+'px';
-
 
 }
 
 function generatePillar() {
     let windowHeight = document.getElementById('DropBox').clientHeight;
-    let gap = randomRange(150, 300);
+    let gap = randomRange(windowHeight*0.35, windowHeight*0.45);
     let topPillarHeight = randomRange(50, windowHeight - gap - 50);
     let bottomPillarHeight = windowHeight - gap - topPillarHeight;
 
@@ -148,5 +141,10 @@ function generatePillar() {
 
 
 let bird = new Bird();
+
+let url = new URL(window.location.href);
+if (url.searchParams.get('again') === 'true') {
+    document.addEventListener('DOMContentLoaded', start);
+}
 
 

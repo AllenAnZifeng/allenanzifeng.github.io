@@ -78,9 +78,39 @@ html,body{
     right: 20px;
     margin-top: 3px;
 }
-#info:hover{
+#info i:hover{
     opacity: 0.6;
-    cursor: pointer;
+    cursor: text;
+}
+
+#infoText{
+    position: absolute;
+    font-size: 18px;
+    display: none;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    padding: 2px;
+    z-index: 2;
+    top: 110%;
+    right: 5%;
+    width: 300px;
+    opacity: 0.7;
+    text-align: center;
+}
+
+#info:hover #infoText{
+    display: block;
+}
+
+#infoText::after{
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 7%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
 }
 
 
