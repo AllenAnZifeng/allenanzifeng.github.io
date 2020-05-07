@@ -26,9 +26,9 @@ function Bird(key, height = 100, speed = 0) {
         // head orientation
         let imagedIV = document.getElementById('image');
         if (this.speed > 0) {
-            imagedIV.style.transform = 'rotate(-45deg)';
-        } else {
             imagedIV.style.transform = 'rotate(45deg)';
+        } else {
+            imagedIV.style.transform = 'rotate(-45deg)';
         }
 
         //check within bounding box

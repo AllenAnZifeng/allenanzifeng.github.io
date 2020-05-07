@@ -28,13 +28,16 @@ html,body{
     position: absolute;
     left: 100px;
     top: 100px;
-    transform: scaleX(-1);  /*flip image*/
+
 
 }
 
-#image{
-    transform: rotate(-45deg);
+img{
+    max-width: 60px;
+    max-height: 60px;
 }
+
+
 
 #DropBox{
     position: relative;
