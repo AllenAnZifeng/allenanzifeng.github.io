@@ -3,6 +3,7 @@
 
 
 const g = 0.2;
+let score =0;
 
 function Bird(key, height = 100, speed = 0) {
     this.height = height;
@@ -10,7 +11,6 @@ function Bird(key, height = 100, speed = 0) {
 
     this.jump = () => {
         this.speed -= 5;
-        console.log(this.speed);
     };
 
     this.gravityFall = () => {
@@ -45,6 +45,7 @@ function Bird(key, height = 100, speed = 0) {
         // document.getElementById('bg').style.background="none";
         // document.getElementById('bg').style.backgroundColor='red';
         document.getElementById('bird').style.backgroundColor = 'red';
+        document.getElementById('restart').style.display='block';
     };
 
 }
@@ -55,14 +56,14 @@ let movingPillarID;
 let generatePillarID;
 
 function start() {
-    document.getElementById('start').style.display = 'none';
+    document.getElementById('start').onclick=null;
     birdGravityFallID = setInterval(bird.gravityFall, 20);
     generatePillarID = setInterval(generatePillar, randomRange(1500,2500));
     movingPillarID = setInterval(movingPillar, 20);
 
     document.getElementById('DropBox').addEventListener('click', bird.jump);
     document.onkeypress = function (event) {
-        if (event.code === 'Space' || event.which === 32) {
+        if (event.code === 'Space' || event.which === 32) { // browser compatibility
             bird.jump();
         }
     };
@@ -76,14 +77,18 @@ function movingPillar() {
     let speed = 10;
 
     let pillars = document.getElementsByClassName('pillar');
+    let birdDiv = document.getElementById('bird');
+    let windowHeight = document.getElementById('DropBox').clientHeight;
+    let windowWidth = document.getElementById('DropBox').clientWidth;
+
+
     for (let i = 0; i < pillars.length; i++) {
         let distanceToRight = parseFloat(pillars[i].style.right);
         distanceToRight += speed;
         pillars[i].style.right = distanceToRight + 'px';
 
         // check collision
-        let birdDiv = document.getElementById('bird');
-        let windowHeight = document.getElementById('DropBox').clientHeight;
+
         if (birdDiv.offsetLeft+birdDiv.clientWidth > pillars[i].offsetLeft && birdDiv.offsetLeft < pillars[i].offsetLeft+pillars[i].clientWidth){
             if (pillars[i].id==='top' && birdDiv.offsetTop<pillars[i].clientHeight){
                 bird.death();
@@ -92,9 +97,16 @@ function movingPillar() {
             else if (pillars[i].id==='bottom' && windowHeight-(birdDiv.offsetTop+birdDiv.clientHeight)<pillars[i].clientHeight){
                 bird.death();
             }
-
         }
 
+        // delete pillar, add score
+
+        let scoreDiv = document.getElementById('score');
+        if (pillars[i].id==='top' && pillars[i].checked!==true && parseFloat(pillars[i].style.right) > windowWidth - birdDiv.offsetLeft){
+            score+=1;
+            scoreDiv.innerHTML = 'Score: '+score;
+            pillars[i].checked=true;
+        }
 
     }
 
@@ -136,7 +148,5 @@ function generatePillar() {
 
 
 let bird = new Bird();
-
-
 
 
