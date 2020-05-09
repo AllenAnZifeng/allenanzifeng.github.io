@@ -1,4 +1,4 @@
-html,body{
+html, body {
     /*background-image: url("image.jpg");*/
     /*background-repeat: repeat-x;*/
     /*background-size: cover;*/
@@ -8,11 +8,12 @@ html,body{
     box-sizing: border-box;
     height: 100%;
     min-height: 500px;
+    touch-action: manipulation; /* disable double click zoom on mobile*/
 }
 
-#bg{
+#bg {
     position: absolute;
-    left:0;
+    left: 0;
     top: 0;
     width: 100%;
     height: 100%;
@@ -21,7 +22,7 @@ html,body{
     background-size: auto 100%;
 }
 
-#bird{
+#bird {
     width: 60px;
     height: 60px;
     background: green;
@@ -32,43 +33,42 @@ html,body{
 
 }
 
-img{
+img {
     max-width: 60px;
     max-height: 60px;
 }
 
 
-
-#DropBox{
+#DropBox {
     position: relative;
     height: 100%;
-    border:5px lightcoral solid;
+    border: 5px lightcoral solid;
     overflow: hidden;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    touch-action: manipulation;
+
 }
 
-#restart{
+#restart {
     display: none;
     z-index: 1;
 }
 
-.button{
+.button {
     background-color: lightblue;
     margin: 5px;
     padding: 4px;
 }
 
-.button:hover{
+.button:hover {
     cursor: pointer;
     background-color: lightgray;
 }
 
 
-#HeaderBar{
+#HeaderBar {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -77,19 +77,20 @@ img{
 }
 
 
-#info{
+#info {
     position: absolute;
     right: 20px;
     margin-top: 3px;
 }
-#info i:hover{
+
+#info i:hover {
     opacity: 0.6;
     cursor: text;
 }
 
-#infoText{
+#infoText {
     position: absolute;
-    font-size: 18px;
+    font-size: 0.7em;
     display: none;
     background-color: black;
     color: white;
@@ -103,11 +104,11 @@ img{
     text-align: center;
 }
 
-#info:hover #infoText{
+#info:hover #infoText {
     display: block;
 }
 
-#infoText::after{
+#infoText::after {
     content: '';
     position: absolute;
     bottom: 100%;
@@ -118,7 +119,7 @@ img{
 }
 
 
-#container{
+#container {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -126,7 +127,7 @@ img{
 
 }
 
-.pillar{
+.pillar {
     position: absolute;
     background-color: lightgreen;
     width: 80px;

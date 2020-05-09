@@ -1,0 +1,117 @@
+@charset "UTF-8";
+
+html, body {
+    margin: 0;
+    font-family: 'Kulim Park', sans-serif;
+    font-size: 20px;
+    height: 100%;
+    min-height: 530px;
+}
+
+
+.mainDiv {
+    padding: 1.2em;
+    max-width: 80%;
+    text-align: center;
+}
+
+.button_layer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+#panel {
+    height: 100%;
+    min-width: 400px;
+    background-color: black;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+#topHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.button {
+    cursor: pointer;
+    margin: 15px;
+    padding: 5px;
+}
+
+.button:hover {
+    opacity: 0.7;
+
+}
+
+.contentBody {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    font-size: 1.8em;
+    margin: 0;
+    font-weight: bold;
+}
+
+.social-icon {
+    color: white;
+    padding: 0.4em;
+    margin: 0.4em;
+    font-size: 2em;
+}
+
+.social-icon:hover {
+    color: grey
+}
+
+#imgMe {
+    height: 12em;
+}
+
+ul.button {
+    text-align: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.button li {
+    display: inline;
+}
+
+.extraPadding {
+    padding: 0.5em;
+}
+
+/*if the screen is at least 1004px wide (768 is typical)*/
+@media only screen and (min-width: 1208px) {
+    /* For desktops: */
+    /*Always Design for Mobile First*/
+    .contentBody {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    #imgMe {
+        height: 22em;
+        border-radius: 50%;
+    }
+
+    .mainDiv {
+        /*padding: val1 val2;  --> val1 top bottom, val2 */
+        padding: 0 1.6em;
+        max-width: 40%;
+    }
+
+}

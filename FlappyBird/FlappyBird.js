@@ -83,7 +83,7 @@ function movingPillar() {
     let birdDiv = document.getElementById('bird');
     let windowHeight = document.getElementById('DropBox').clientHeight;
     let windowWidth = document.getElementById('DropBox').clientWidth;
-
+    let garbage = [];
 
     for (let i = 0; i < pillars.length; i++) {
         let distanceToRight = parseFloat(pillars[i].style.right);
@@ -101,7 +101,7 @@ function movingPillar() {
             }
         }
 
-        // delete pillar, add score
+        // add score
 
         let scoreDiv = document.getElementById('score');
         if (pillars[i].id === 'top' && pillars[i].checked !== true && parseFloat(pillars[i].style.right) > windowWidth - birdDiv.offsetLeft) {
@@ -110,7 +110,17 @@ function movingPillar() {
             pillars[i].checked = true;
         }
 
+        // append out of bound div
+        if (parseFloat(pillars[i].style.right)>windowWidth){
+            garbage.push(pillars[i]);
+        }
     }
+    let parent = document.getElementById('DropBox');
+    for (let i = 0; i < garbage.length; i++) {
+        parent.removeChild(garbage[i]);
+    }
+
+
 
 }
 
@@ -120,7 +130,8 @@ function generatePillar() {
     let topPillarHeight = randomRange(50, windowHeight - gap - 50);
     let bottomPillarHeight = windowHeight - gap - topPillarHeight;
 
-    let topPillar = document.createElement('div');
+    let topPillar = document.createElement(`div`);
+    document.getElementById('DropBox').appendChild(topPillar);
     topPillar.id = 'top';
     topPillar.className = 'pillar';
     topPillar.style.height = topPillarHeight + 'px'; // pillar min height 100px
@@ -128,14 +139,15 @@ function generatePillar() {
     topPillar.style.right = '0';
 
     let bottomPillar = document.createElement('div');
+    document.getElementById('DropBox').appendChild(bottomPillar);
     bottomPillar.id = 'bottom';
     bottomPillar.className = 'pillar';
     bottomPillar.style.height = bottomPillarHeight + 'px';
     bottomPillar.style.bottom = '0';
     bottomPillar.style.right = '0';
 
-    document.getElementById('DropBox').appendChild(topPillar);
-    document.getElementById('DropBox').appendChild(bottomPillar);
+
+
 
 }
 
