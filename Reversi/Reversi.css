@@ -5,6 +5,7 @@ html, body {
     touch-action: manipulation; /* disable double click zoom on mobile*/
 }
 
+
 #contentBody{
     display: flex;
     flex-direction: row;
