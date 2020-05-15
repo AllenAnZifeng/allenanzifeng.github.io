@@ -1,0 +1,40 @@
+html, body {
+    font-family: 'Consolas', sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+    touch-action: manipulation; /* disable double click zoom on mobile*/
+}
+
+#contentBody{
+    display: flex;
+    flex-direction: row;
+}
+
+#game{
+    display: flex;
+    flex-direction: column;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+}
+
+.cell{
+    border: grey 1px solid;
+    border-radius: 10px;
+    min-height: 50px;
+    min-width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1px;
+}
+
+.cell:hover{
+    background-color: lightgrey;
+}
+
+i::before{
+    font-size: 1.4em;
+}

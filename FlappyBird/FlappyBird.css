@@ -1,13 +1,10 @@
 html, body {
-    /*background-image: url("image.jpg");*/
-    /*background-repeat: repeat-x;*/
-    /*background-size: cover;*/
     font-family: 'Roboto', sans-serif;
     font-size: 45px;
     margin: 0;
     box-sizing: border-box;
     height: 100%;
-    touch-action: manipulation; /* disable double click zoom on mobile*/
+    touch-action: none; /* disable double click zoom on mobile*/
 }
 
 #bg {
