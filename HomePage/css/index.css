@@ -6,6 +6,8 @@ html, body {
     font-size: 20px;
     height: 100%;
     min-height: 650px;
+    min-width: 400px;
+
 }
 
 
@@ -24,7 +26,7 @@ html, body {
 
 #panel {
     height: 100%;
-    min-width: 400px;
+
     background-color: black;
     color: white;
     display: flex;

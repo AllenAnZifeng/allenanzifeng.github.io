@@ -1,6 +1,6 @@
 # Personal Website
 
-```python
-print("Hello Front End!")
+```javascript
+console.log("Hello Front End!")
 ```
 Feel free to check my resume by clicking :page_with_curl:
