@@ -1,8 +1,15 @@
-html, body {
+* {
     font-family: 'Consolas', sans-serif;
+    font-size: 20px;
     margin: 0;
     box-sizing: border-box;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shaodw 0.2s ease-in-out ;
     touch-action: manipulation; /* disable double click zoom on mobile*/
+}
+
+h1{
+    font-size: 36px;
+    margin: 20px;
 }
 
 
@@ -11,9 +18,10 @@ html, body {
     flex-direction: row;
 }
 
-#game{
+.game{
     display: flex;
     flex-direction: column;
+    margin: 20px;
 }
 
 .row{
@@ -33,9 +41,48 @@ html, body {
 }
 
 .cell:hover{
-    background-color: lightgrey;
+    background-color: lightgrey !important;
+    border-color: black;
 }
+
+.button{
+    border: grey 1px solid;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    width: max-content;
+    padding: 5px 6px;
+
+
+}
+
+.button:hover{
+    background-color: lightgrey;
+    border-color: black;
+    cursor: pointer;
+    /*box-shadow: 2px 5px 18px #888888;*/
+}
+
+
 
 i::before{
     font-size: 1.4em;
+}
+
+.log{
+    border: grey 1px solid;
+    border-radius: 20px;
+    margin-top: 20px;
+    padding: 10px;
+
+
+}
+.log strong{
+    font-size: 24px;
+}
+
+.log i::before{
+    font-size: 14px;
 }

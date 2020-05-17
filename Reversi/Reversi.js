@@ -8,50 +8,70 @@ const Cell = {
 };
 
 const Size = {
-    ROW: 8,
-    COL: 8,
+    ROW: 4,
+    COL: 4,
 };
 
 
 function main() {
 
-
-    // initialize board
-    let board = new Board();
-    board.initializeBoard();
+    let games = document.getElementsByClassName('game');
+    for(let game of games){
+        createGame(game);
+    }
 
 
 }
 
 
-function Board() {
+function createGame(game){
+    // assign unique ID
+    game.id = randomNumber();
+
+    // initialize board
+    let board = new Board(game.id);
+    board.initializeBoard();
+
+    // expose variable to global scope
+    window['game'+game.id] = board;
+}
+
+
+function Board(id) {
+
     this.value = [];
     this.cellArray = [];
     this.color = Cell.Black; // default black move first
     this.whiteCount = 2;
     this.blackCount =2;
+    this.id= id;
+    this.log = null;
+    this.info=null;
+    this.reminder = null;
+    this.nextAvailableMove = false;
 
     this.initializeBoard = () => {
         // initialize value array
         for (let i = 0; i < Size.ROW; i++) {
             this.value.push([]);
             for (let j = 0; j < Size.COL; j++) {
-
-                if (((i === 3) && (j === 3)) || ((i === 4) && (j === 4))) {
-                    this.value[i].push(Cell.Black);
-                } else if (((i === 3) && (j === 4)) || ((i === 4) && (j === 3))) {
-                    this.value[i].push(Cell.White);
-                } else {
                     this.value[i].push(Cell.Empty);
-                }
             }
         }
 
-        // create game div
-        let contentBody = document.getElementById('contentBody');
-        let game = document.createElement('div');
-        game.id = 'game';
-        contentBody.appendChild(game);
+        // this.value[3][3] = Cell.Black;
+        // this.value[3][4] = Cell.White;
+        // this.value[4][3] = Cell.White;
+        // this.value[4][4] = Cell.Black;
+
+        this.value[1][1] = Cell.Black;
+        this.value[1][2] = Cell.White;
+        this.value[2][1] = Cell.White;
+        this.value[2][2] = Cell.Black;
+
+
+        // get game div
+        let game = document.getElementById(this.id);
 
         // initialize cell array
         for (let i = 0; i < Size.COL; i++) {
@@ -72,57 +92,92 @@ function Board() {
             }
         }
 
-        // info
-        let player = document.createElement('div');
-        player.innerHTML = this.color + ' Move';
-        player.id = 'player';
-        game.appendChild(player);
+        // log
+        this.log = document.createElement('div');
+        this.log.id = 'log' + this.id;
+        this.log.className = 'log';
+        game.appendChild(this.log);
 
-        let blackCount = document.createElement('div');
-        blackCount.id = 'blackCount';
-        blackCount.innerHTML = Cell.Black + ' count: ' + 2;
-        game.appendChild(blackCount);
+        this.info = document.createElement('div');
+        this.info.id='info'+this.id;
+        this.info.innerHTML = this.updateInfo();
 
-        let whiteCount = document.createElement('div');
-        whiteCount.id = 'whiteCount';
-        whiteCount.innerHTML = Cell.White + ' count: ' + 2;
-        game.appendChild(whiteCount);
+        this.reminder = document.createElement('div');
+        this.reminder.id='reminder'+this.id;
+        this.reminder.innerHTML= '<span>Click on the Hint to Flip </span>';
+
+        this.log.appendChild(this.info);
+        this.log.appendChild(this.reminder);
+
+        // new game
+        let button = document.createElement('div');
+        button.className = 'button';
+        button.innerText= 'New Game';
+
+        game.appendChild(button);
+        button.addEventListener('click',()=>{this.newGame()});
 
         // display
-        this.display(this.value, this.cellArray);
+        this.updateDisplay();
+
     };
 
-    this.display = (boardArr, divArr) => {
+    this.newGame = ()=>{
+        // remove old game
+        let parent = document.getElementById('contentBody');
+        let oldGame = document.getElementById(this.id);
+        parent.removeChild(oldGame);
+
+        // create new game
+        let newGame = document.createElement('div');
+        newGame.className = 'game';
+        parent.appendChild(newGame);
+        createGame(newGame);
+
+    };
+
+
+    this.updateInfo = () => {
+
+        return '<strong>Game Log</strong> <br>' +
+            this.color + ' Move<br>' +
+            Cell.Black + ' Count: ' + this.blackCount + '<br>' +
+            Cell.White + ' Count: ' + this.whiteCount + '<br>' ;
+
+    };
+
+
+    this.updateDisplay = () => {
+        this.nextAvailableMove = false;
         for (let i = 0; i < Size.ROW; i++) {
             for (let j = 0; j < Size.COL; j++) {
-                divArr[i][j].innerHTML = boardArr[i][j];
+                this.cellArray[i][j].innerHTML = this.value[i][j];
+                this.cellArray[i][j].style.backgroundColor = null;
+                // update hint
+                if (this.value[i][j]===Cell.Empty && this.pathToBeFlipped(i,j).length>0){
+                    this.cellArray[i][j].style.backgroundColor = '#e9e9e9';
+                    this.nextAvailableMove = true;
+                }
             }
         }
+        this.info.innerHTML = this.updateInfo();
+        this.reminder.innerHTML= '<span>Click on the Hint to Flip </span>';
+
     };
 
     this.clickListener = (row, col) => {
         if (this.value[row][col] === Cell.Empty) {
             this.gameUpdate(row, col);
         } else {
-            alert('cannot put onto existing piece!')
+            this.reminder.innerHTML = '<span style="color: red">Cannot Put onto Existing Piece!</span>';
+            // alert('cannot put onto existing piece!');
+
         }
-        this.infoUpdate();
-    };
-
-    this.infoUpdate = () => {
-        let player = document.getElementById('player');
-        player.innerHTML = this.color + ' Move';
-
-        let whiteCount = document.getElementById('whiteCount');
-        whiteCount.innerHTML =  Cell.White + ' count: ' + this.whiteCount;
-
-        let blackCount = document.getElementById('blackCount');
-        blackCount.innerHTML =  Cell.Black + ' count: ' + this.blackCount;
 
     };
 
 
-    this.gameUpdate = (row, col) => { // color: current move player color
+    this.pathToBeFlipped = (row, col)=>{
         let paths = [];
         let steps = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]];
         for (let step of steps) {
@@ -146,14 +201,20 @@ function Board() {
                     break
                 }
             }
-
             for (let path of temp) {
                 paths.push(path);
             }
         }
+        return paths;
+    };
+
+    this.gameUpdate = (row, col) => { // color: current move player color
+
+        let paths = this.pathToBeFlipped(row,col);
 
         if (paths.length === 0) {
-            alert('Did not flip anything!');
+            this.reminder.innerHTML = '<span style="color: red">Did not flip anything!</span>';
+            // alert('Did not flip anything!');
             return;
         }
 
@@ -180,8 +241,49 @@ function Board() {
         this.whiteCount = whiteCount;
         this.blackCount = blackCount;
 
+        this.updateDisplay();
+        this.checkResult();
 
-        this.display(this.value, this.cellArray);
+    };
+
+
+    this.checkResult = ()=>{
+        if (this.whiteCount===0){
+            this.reminder.innerHTML = Cell.Black +'<span style="color: red"> Win!</span>';
+            this.clickListener=()=>{};
+            return;
+        }
+        else if (this.blackCount===0){
+            this.reminder.innerHTML = Cell.White +'<span style="color: red"> Win!</span>';
+            this.clickListener=()=>{};
+            return;
+        }
+        else if(this.blackCount+this.whiteCount===Size.COL*Size.ROW){
+            if (this.whiteCount>this.blackCount){
+                this.reminder.innerHTML = Cell.White +'<span style="color: red"> Win!</span>';
+            }
+            else if(this.whiteCount<this.blackCount){
+                this.reminder.innerHTML = Cell.Black +'<span style="color: red"> Win!</span>';
+            }
+            else{
+                this.reminder.innerHTML = '<span style="color: red"> This is a Tie!</span>';
+            }
+            this.clickListener=()=>{};
+            return;
+        }
+
+        if (! this.nextAvailableMove){
+
+            this.color= this.flipColor(this.color);
+            this.updateDisplay();
+            this.reminder.innerHTML = this.flipColor(this.color)+'<span style="color: red"> cannot Move! Turn Skipped! </span>';
+
+        }
+
+
+
+
+
 
     };
 
@@ -204,11 +306,9 @@ function Board() {
 
 }
 
+function randomNumber(){
+    return  Math.floor(Math.random()*10**10);
 
-function uuid() {
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
 }
 
 
@@ -216,5 +316,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
     main();
 });
 
-// b.update(2,4,'black')
-// b.update(4,5,'white')
