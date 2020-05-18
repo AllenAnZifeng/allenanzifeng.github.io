@@ -117,3 +117,14 @@ ul.button li {
     }
 
 }
+
+
+#imgMe{
+    animation: zoomIn;
+    animation-duration: 2s;
+}
+
+.social-icon>*,.button,h1,.extraPadding{
+    animation: flipInX;
+    animation-duration: 2s;
+}

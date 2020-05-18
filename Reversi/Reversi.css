@@ -97,3 +97,8 @@ i::before{
 .log i::before{
     font-size: 14px;
 }
+
+h1{
+    animation: tada;
+    animation-duration: 1s;
+}
