@@ -8,8 +8,8 @@ const Cell = {
 };
 
 const Size = {
-    ROW: 4,
-    COL: 4,
+    ROW: 8,
+    COL: 8,
 };
 
 
@@ -59,15 +59,15 @@ function Board(id) {
             }
         }
 
-        // this.value[3][3] = Cell.Black;
-        // this.value[3][4] = Cell.White;
-        // this.value[4][3] = Cell.White;
-        // this.value[4][4] = Cell.Black;
+        this.value[3][3] = Cell.Black;
+        this.value[3][4] = Cell.White;
+        this.value[4][3] = Cell.White;
+        this.value[4][4] = Cell.Black;
 
-        this.value[1][1] = Cell.Black;
-        this.value[1][2] = Cell.White;
-        this.value[2][1] = Cell.White;
-        this.value[2][2] = Cell.Black;
+        // this.value[1][1] = Cell.Black;
+        // this.value[1][2] = Cell.White;
+        // this.value[2][1] = Cell.White;
+        // this.value[2][2] = Cell.Black;
 
 
         // get game div

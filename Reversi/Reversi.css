@@ -1,21 +1,31 @@
 * {
     font-family: 'Consolas', sans-serif;
-    font-size: 20px;
+
     margin: 0;
     box-sizing: border-box;
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shaodw 0.2s ease-in-out ;
     touch-action: manipulation; /* disable double click zoom on mobile*/
 }
 
-h1{
-    font-size: 36px;
-    margin: 20px;
+h1,h3{
+
+    margin: 20px 150px 20px 20px;
+
 }
 
+#panel{
+    margin: 20px;
+
+}
+
+body{
+    display: flex;
+}
 
 #contentBody{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .game{
@@ -76,6 +86,7 @@ i::before{
     border-radius: 20px;
     margin-top: 20px;
     padding: 10px;
+    font-size: 20px;
 
 
 }
