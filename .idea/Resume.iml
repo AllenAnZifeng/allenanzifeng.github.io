@@ -11,5 +11,8 @@
     <orderEntry type="library" name="6670bd51cb" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="animate" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="bootstrap-theme" level="application" />
+    <orderEntry type="library" name="popper" level="application" />
   </component>
 </module>

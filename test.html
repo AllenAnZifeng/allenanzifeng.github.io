@@ -31,17 +31,11 @@
 <script>
     $(document).ready(function () {
         let p = $('p');
-        let keys = [];
-        let value =[];
-        for (let key in p ){
-            keys.push(key)
-        }
-        for (let v of p){
-            value.push(v);
-        }
-        console.log(keys);
-        console.log(value);
+        console.log(p[0]);
+        p.css({'background-color':'red','color':'blue'})
 
-    })
+    });
+
+
 </script>
 </html>
