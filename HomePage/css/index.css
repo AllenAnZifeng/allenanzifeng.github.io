@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-html, body {
+html,body{
     margin: 0;
     font-family: 'Kulim Park', sans-serif;
     font-size: 20px;
@@ -8,6 +8,21 @@ html, body {
     min-height: 650px;
     min-width: 400px;
 
+}
+
+body{
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.contentBody {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -25,12 +40,12 @@ html, body {
 }
 
 #panel {
-    height: 100%;
-
-    background-color: black;
-    color: white;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    background-color: black;
+    color: white;
+
 }
 
 #topHeader {
@@ -48,15 +63,6 @@ html, body {
 .button:hover {
     opacity: 0.7;
 
-}
-
-.contentBody {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 }
 
 h1 {
