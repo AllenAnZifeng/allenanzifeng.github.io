@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+html,body{
+    margin: 0;
+    font-family: 'Kulim Park', sans-serif;
+    font-size: 20px;
+    height: 100%;
+    min-height: 650px;
+    min-width: 400px;
+
+}

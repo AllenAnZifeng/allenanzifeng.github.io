@@ -56,7 +56,7 @@ function randomRange(min,max){
 
 function main(){
     let capsule = new FireBit();
-    let fallID = setInterval(capsule.move,20);
+    // let fallID = setInterval(capsule.move,20);
     window.capsule = capsule;
 }
 

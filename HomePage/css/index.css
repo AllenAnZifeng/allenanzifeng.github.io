@@ -1,42 +1,20 @@
 @charset "UTF-8";
 
-html,body{
-    margin: 0;
-    font-family: 'Kulim Park', sans-serif;
+*{
+    box-sizing: border-box;
+}
+
+html {
     font-size: 20px;
     height: 100%;
-    min-height: 650px;
-    min-width: 400px;
-
 }
 
 body{
-
+    font-family: 'Kulim Park', sans-serif;
     display: flex;
     flex-direction: column;
-}
-
-
-.contentBody {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-
-.mainDiv {
-    padding: 1.2em;
-    max-width: 80%;
-    text-align: center;
-}
-
-.button_layer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
+    margin: 0;
+    height: 100%;
 }
 
 #panel {
@@ -48,11 +26,13 @@ body{
 
 }
 
+
 #topHeader {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 }
+
 
 .button {
     cursor: pointer;
@@ -62,19 +42,54 @@ body{
 
 .button:hover {
     opacity: 0.7;
+    /*color: grey;*/
+}
+
+.contentBody {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.mainDiv {
+    display: flex;
+    flex-direction: column;
+    padding: 1.2em;
+
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.iconBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 
 }
 
-h1 {
+
+#name {
     font-size: 1.8em;
-    margin: 0;
     font-weight: bold;
 }
 
+#quote{
+    margin: 1em;
+    padding: 0.5em;
+
+}
+
+
 .social-icon {
     color: white;
-    padding: 0.4em;
-    margin: 0.4em;
+    padding: 0.3em;
+    margin: 0.3em;
     font-size: 2em;
 }
 
@@ -86,29 +101,13 @@ h1 {
     height: 12em;
 }
 
-ul.button {
-    text-align: center;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-ul.button li {
-    display: inline;
-}
-
-.extraPadding {
-    padding: 0.5em;
-}
 
 /*if the screen is at least 1004px wide (768 is typical)*/
 @media only screen and (min-width: 1208px) {
     /* For desktops: */
     /*Always Design for Mobile First*/
     .contentBody {
-        display: flex;
         flex-direction: row;
-        justify-content: center;
     }
 
     #imgMe {
@@ -117,20 +116,30 @@ ul.button li {
     }
 
     .mainDiv {
-        /*padding: val1 val2;  --> val1 top bottom, val2 */
+
         padding: 0 1.6em;
-        max-width: 40%;
+
+    }
+
+    .social-icon {
+
+        padding: 0.4em;
+        margin: 0.4em;
+
     }
 
 }
 
+
+/*animation effects*/
 
 #imgMe{
     animation: zoomIn;
     animation-duration: 2s;
 }
 
-.social-icon>*,.button,h1,.extraPadding{
+.iconBox,.button,#name,#quote{
     animation: flipInX;
     animation-duration: 2s;
 }
+

@@ -3,38 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="test.css" type="text/css">
-    <script src="test.js"></script>
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
     />
 </head>
+<style>
+    html{
+        font-size: 40px;
+    }
+    body{
+        margin: 0;
+    }
+    .trial{
+        font-size: 1rem;
+    }
+    .em{
+        /*width: 1em;*/
+        /*height: 2em;*/
+        font-size: 2em;
+
+        background-color: #cdfff5;
+    }
+
+</style>
+
+
 <body>
 
-        <div class="trial">
-            123
+
+<div class="trial">
+    <div class="em">
+        m
+        <div class="em">
+            2m
+            <!--            <div class="em">-->
+            <!--                2m-->
+            <!--                <div class="em">-->
+            <!--                    2m-->
+            <!--                </div>-->
         </div>
-        <div class="trial">
-            4
-        </div>
-        <p>
+    </div>
+</div>
+
+<div>
             Hello Animation
-        </p>
-        <div class="trial">
-        6
         </div>
+
 
 </body>
 
 <script>
-    $(document).ready(function () {
-        let p = $('p');
-        console.log(p[0]);
-        p.css({'background-color':'red','color':'blue'})
 
-    });
 
 
 </script>
