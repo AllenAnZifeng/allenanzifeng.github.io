@@ -1,4 +1,5 @@
 html, body {
+    height: 100%;
     touch-action: none; /* disable double click zoom on mobile*/
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10+ and Edge */

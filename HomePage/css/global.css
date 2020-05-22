@@ -7,7 +7,6 @@
 
 html {
     font-size: 20px;
-    height: 100%;
 }
 
 body{
@@ -15,5 +14,4 @@ body{
     display: flex;
     flex-direction: column;
     margin: 0;
-    height: 100%;
 }
