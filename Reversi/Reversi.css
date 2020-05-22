@@ -5,13 +5,15 @@
 
 body{
     font-family: Consolas,sans-serif;
+    align-items: flex-start;
 }
+
+
 
 #title{
     margin: 20px;
     font-weight: bolder;
     font-size: 2em;
-
 }
 
 #name{
@@ -30,8 +32,8 @@ body{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin: 10px 40px;
-    width: fit-content;
+    padding: 10px 40px;
+
 
 }
 
@@ -125,9 +127,7 @@ h1{
         flex-grow: 1;
     }
     .cell{
-
         min-height: 60px;
         min-width: 60px;
-
     }
 }
