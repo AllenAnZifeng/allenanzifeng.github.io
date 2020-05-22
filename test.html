@@ -18,16 +18,13 @@
     body{
         margin: 0;
     }
-    .trial{
+    .trial,#apple{
         font-size: 1rem;
+        background-color: red;
+        width: 100px;
+        height: 200px;
     }
-    .em{
-        /*width: 1em;*/
-        /*height: 2em;*/
-        font-size: 2em;
 
-        background-color: #cdfff5;
-    }
 
 </style>
 
@@ -36,27 +33,17 @@
 
 
 <div class="trial">
-    <div class="em">
-        m
-        <div class="em">
-            2m
-            <!--            <div class="em">-->
-            <!--                2m-->
-            <!--                <div class="em">-->
-            <!--                    2m-->
-            <!--                </div>-->
-        </div>
-    </div>
 </div>
 
-<div>
-            Hello Animation
-        </div>
-
+<div id ='apple'></div>
 
 </body>
 
 <script>
+    let d = document.querySelector('.trial');
+    let apple = document.getElementById('apple');
+    console.log(apple);
+
 
 
 

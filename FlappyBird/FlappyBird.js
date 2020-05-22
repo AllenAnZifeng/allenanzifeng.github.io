@@ -77,10 +77,16 @@ function randomRange(min, max) {
 }
 
 function movingPillar() {
-    let speed = 10;
+    let speed;
+    let birdDiv = document.getElementById('bird');
+    if (parseFloat(birdDiv.clientWidth)<=30){
+        speed = 5;
+    }
+    else{
+        speed = 10;
+    }
 
     let pillars = document.getElementsByClassName('pillar');
-    let birdDiv = document.getElementById('bird');
     let windowHeight = document.getElementById('DropBox').clientHeight;
     let windowWidth = document.getElementById('DropBox').clientWidth;
     let garbage = [];

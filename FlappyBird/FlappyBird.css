@@ -1,14 +1,75 @@
 html, body {
-    font-family: 'Roboto', sans-serif;
-    font-size: 45px;
-    margin: 0;
-    box-sizing: border-box;
-    height: 100%;
     touch-action: none; /* disable double click zoom on mobile*/
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10+ and Edge */
     user-select: none; /* Standard syntax */
 }
+
+
+#HeaderBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+
+}
+
+
+#info {
+    position: absolute;
+    right: 0.5em;
+
+}
+
+#info i:hover {
+    opacity: 0.6;
+    cursor: text;
+}
+
+#infoText {
+    position: absolute;
+    font-size: 0.7em;
+    display: none;
+    border-radius: 5px;
+    padding: 2px;
+    z-index: 2;
+    top: 120%;
+    right: 5%;
+    width: 300px;
+    opacity: 0.7;
+    text-align: center;
+    color: white;
+    background-color: black;
+}
+
+#info:hover #infoText {
+    display: block;
+}
+
+#infoText::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 5%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+
+.button {
+    color: black;
+    margin: 5px;
+    padding: 4px;
+}
+
+.button:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+
 
 #bg {
     position: absolute;
@@ -22,19 +83,17 @@ html, body {
 }
 
 #bird {
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
     background: green;
     position: absolute;
     left: 100px;
     top: 100px;
-
-
 }
 
 img {
-    max-width: 60px;
-    max-height: 60px;
+    max-width: 30px;
+    max-height: 30px;
 }
 
 
@@ -55,67 +114,6 @@ img {
     z-index: 1;
 }
 
-.button {
-    background-color: lightblue;
-    margin: 5px;
-    padding: 4px;
-}
-
-.button:hover {
-    cursor: pointer;
-    background-color: lightgray;
-}
-
-
-#HeaderBar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    position: relative;
-}
-
-
-#info {
-    position: absolute;
-    right: 20px;
-    margin-top: 3px;
-}
-
-#info i:hover {
-    opacity: 0.6;
-    cursor: text;
-}
-
-#infoText {
-    position: absolute;
-    font-size: 0.7em;
-    display: none;
-    background-color: black;
-    color: white;
-    border-radius: 5px;
-    padding: 2px;
-    z-index: 2;
-    top: 110%;
-    right: 5%;
-    width: 300px;
-    opacity: 0.7;
-    text-align: center;
-}
-
-#info:hover #infoText {
-    display: block;
-}
-
-#infoText::after {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    right: 7%;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent black transparent;
-}
 
 
 #container {
@@ -129,6 +127,32 @@ img {
 .pillar {
     position: absolute;
     background-color: lightgreen;
-    width: 80px;
+    width: 2em;
     right: 0;
+}
+
+
+@media only screen and (min-width: 900px) {
+
+    #HeaderBar{
+        font-size: 2em;
+    }
+
+    #bird {
+        width: 60px;
+        height: 60px;
+        background: green;
+        position: absolute;
+        left: 100px;
+        top: 100px;
+    }
+
+    img {
+        max-width: 60px;
+        max-height: 60px;
+    }
+
+    .pillar{
+        width: 4em;
+    }
 }
