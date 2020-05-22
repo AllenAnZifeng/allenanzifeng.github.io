@@ -43,8 +43,8 @@ h3{
 .cell{
     border: grey 1px solid;
     border-radius: 10px;
-    min-height: 50px;
-    min-width: 50px;
+    min-height: 45px;
+    min-width: 45px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -112,5 +112,11 @@ h1{
     }
     #panel{
         flex-grow: 1;
+    }
+    .cell{
+
+        min-height: 60px;
+        min-width: 60px;
+
     }
 }
