@@ -1,10 +1,6 @@
-*{
-    box-sizing: border-box;
-}
 
 html,body{
     height: 100%;
-    margin: 0;
 
 }
 
@@ -24,10 +20,19 @@ html,body{
     background-color: lightcoral;
 }
 
-.capsule{
+.firebit{
     background-color: black;
     height: 20px;
     width: 20px;
     position: absolute;
+    transition: bottom ease-out 2000ms, left ease-out 2000ms;
+}
 
+.colorbit{
+    background-color: green;
+    height: 3px;
+    width: 3px;
+    position: absolute;
+
+    transition: all ease-in-out 100ms;
 }
