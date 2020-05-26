@@ -3,6 +3,10 @@
     touch-action: manipulation; /* disable double click zoom on mobile*/
 }
 
+html,body{
+    max-width: 100%;
+}
+
 body{
     font-family: Consolas,sans-serif;
     align-items: flex-start;
