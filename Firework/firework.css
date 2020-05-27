@@ -9,30 +9,43 @@ html,body{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
     position: relative;
     overflow: hidden;
 }
 
 #launcher{
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
+
     background-color: lightcoral;
+    transition: transform linear 100ms;
+}
+
+#launcher:hover{
+    transform: translate(0,-3px);
+    box-shadow: 0 3px 10px 3px #a2a2a2;
+    transition: transform linear 100ms;
 }
 
 .firebit{
+    display: block;
     background-color: black;
-    height: 20px;
-    width: 20px;
+    border-radius: 10px;
+    height: 10px;
+    width: 10px;
     position: absolute;
-    transition: bottom ease-out 2000ms, left ease-out 2000ms;
+    transition: bottom ease-out 500ms, left ease-out 500ms;
 }
 
 .colorbit{
-    background-color: green;
-    height: 3px;
-    width: 3px;
-    position: absolute;
+    display: block;
+    visibility: visible;
 
-    transition: all ease-in-out 100ms;
+    height: 5px;
+    width: 5px;
+    border-radius: 5px;
+    position: absolute;
+    opacity: 1;
+    transition: bottom ease-out 500ms, left ease-out 500ms, opacity linear 250ms;
 }
