@@ -1,8 +1,5 @@
 @charset "UTF-8";
 
-html,body{
-    height: 100%;
-}
 
 #panel {
     display: flex;
@@ -24,7 +21,7 @@ html,body{
 
 .button {
     cursor: pointer;
-    margin: 15px;
+    margin: 10px 15px;
     padding: 5px;
 }
 
@@ -59,6 +56,7 @@ html,body{
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    padding-bottom: 50px;
 
 }
 

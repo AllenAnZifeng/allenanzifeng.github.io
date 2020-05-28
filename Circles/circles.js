@@ -10,6 +10,28 @@ function main(){
     canvas.width=window.innerWidth;
     canvas.height=window.innerHeight;
 
+    window.addEventListener('resize', (event)=>{
+        canvas.width=window.innerWidth;
+        canvas.height=window.innerHeight;
+        // console.log(window.innerHeight,window.innerWidth);
+
+        init();
+    });
+
+    window.addEventListener('mousemove', (event)=>{
+        mouse.x =event.x;
+        mouse.y=event.y;
+        // console.log(mouse);
+    });
+
+    canvas.addEventListener('click', (event)=>{ // safari
+        mouse.x =event.x;
+        mouse.y=event.y;
+        // console.log(mouse);
+    });
+
+
+
 
     let c = canvas.getContext('2d');
     //
@@ -45,35 +67,43 @@ function main(){
     // let radius = 30;
 
 
-    let circle_arr = [];
-
-    for (let i = 0; i < 100; i++) {
-        circle_arr.push(new Circle(c));
-
+    function init() {
+        window.circleArr=[];
+        for (let i = 0; i < 300; i++) {
+            window.circleArr.push(new Circles(c));
+        }
     }
 
     function animate() {
         requestAnimationFrame(animate);
         c.clearRect(0,0,window.innerWidth,window.innerHeight);
-        for (let circle of circle_arr){
+        for (let circle of window.circleArr){
 
             circle.update();
         }
     }
+
+
+    init();
     animate();
 
 
 }
 
 
-function Circle(c){
-    this.radius = randomeRangle(20,40);
+
+
+function Circles(c){
+    this.radius = randomAngle(1,5);
     this.x = Math.random()*(innerWidth-2*this.radius)+this.radius;
     this.y =Math.random()*(innerHeight-2*this.radius)+this.radius;
-    this.dx = (Math.random()-0.5)*20;
-    this.dy = (Math.random()-0.5)*20;
+    this.dx = (Math.random()-0.5)*5;
+    this.dy = (Math.random()-0.5)*5;
     this.color = randomColor();
-    this.big = false;
+    this.maxRadius = 30;
+    this.minRadius = this.radius;
+    this.affectedRange = 80;
+
 
     this.c = c;
     this.update = ()=>{
@@ -89,35 +119,31 @@ function Circle(c){
 
         let distance = Math.sqrt(Math.pow(mouse.x-this.x,2)+Math.pow(mouse.y-this.y,2));
 
-        if (!this.big && distance<90){
-            this.radius += 30;
+        if (distance<this.affectedRange && this.radius <this.maxRadius){
+            this.radius += 1;
 
-            this.big=true;
-        }else{
-            if (this.big){
 
-                this.radius-=30;
-                this.big=false;
-            }
+        }
+        else if (this.radius >this.minRadius) {
+
+            this.radius -= 1;
         }
 
-
         this.draw();
-
-
     };
 
     this.draw=()=>{
         this.c.beginPath();
         this.c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
         this.c.strokeStyle = this.color;
-        // this.c.fill();
+        this.c.fillStyle = this.color;
+        this.c.fill();
         this.c.stroke();
     };
 
 }
 
-function randomeRangle(min,max){
+function randomAngle(min, max){
     return Math.random()*(max-min)+min;
 }
 
@@ -136,12 +162,6 @@ let mouse= {
 };
 
 document.addEventListener('DOMContentLoaded', (event) => {
-
-    window.addEventListener('mousemove',function (event) {
-       mouse.x =event.x;
-       mouse.y=event.y;
-       // console.log(mouse);
-    });
 
     main();
 });
