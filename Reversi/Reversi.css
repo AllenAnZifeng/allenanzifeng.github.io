@@ -5,12 +5,12 @@
 
 html,body{
     max-width: 100%;
-
+    font-size: 16px;
 }
 
 body{
     font-family: Consolas,sans-serif;
-    align-items: flex-start;
+    align-items: stretch;
 }
 
 
@@ -24,11 +24,11 @@ body{
 #name{
     margin: 20px 10px 10px 20px;
     font-weight: bolder;
-    font-size: 1.1em;
+    font-size: 1.3em;
 }
 
 #panel{
-    margin: 20px;
+    margin: 20px 50px 20px 20px;
     flex-grow: 0;
     max-width: 400px;
 }
@@ -37,7 +37,7 @@ body{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 10px 40px;
+    padding: 5px 0 10px 20px ;
 
 
 }
@@ -56,8 +56,8 @@ body{
 .cell{
     border: grey 1px solid;
     border-radius: 10px;
-    height: 45px;
-    width: 45px;
+    height: 38px;
+    width: 38px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -93,7 +93,7 @@ body{
 
 
 i::before{
-    font-size: 1.4em;
+    font-size: 1.1em;
 }
 
 .log{
@@ -101,16 +101,16 @@ i::before{
     border-radius: 20px;
     margin-top: 20px;
     padding: 10px;
-    font-size: 20px;
+    font-size: 1.1em;
 
 
 }
 .log strong{
-    font-size: 24px;
+    font-size: 1.2em;
 }
 
 .log i::before{
-    font-size: 14px;
+    font-size: 0.7em;
 }
 
 h1{
@@ -120,6 +120,9 @@ h1{
 
 
 @media only screen and (min-width: 800px){
+    html,body{
+        font-size: 20px;
+    }
     body{
         flex-direction: row;
         justify-content: flex-start;
@@ -127,12 +130,17 @@ h1{
 
     #contentBody{
         margin-top: 60px;
+        padding-right: 50px;
     }
     #panel{
         flex-grow: 1;
+        margin: 20px;
     }
     .cell{
         min-height: 60px;
         min-width: 60px;
+    }
+    i::before{
+        font-size: 1.4em;
     }
 }

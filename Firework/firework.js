@@ -125,8 +125,6 @@ class ColorBit extends FireBit{
         this.div.style.opacity=0;
         setTimeout(()=>{this.parent.removeChild(this.div)},300);
 
-
-
     };
 
 
@@ -143,9 +141,9 @@ function main(){
     let counter = 1;
 
 
-    for (let k = 0; k < 3; k++) {
+    for (let k = 0; k < 5; k++) {
         setTimeout(()=>{
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < 5; i++) {
                 let div = document.createElement('div');
                 div.classList.add('firebit');
                 parent.appendChild(div);
@@ -161,7 +159,7 @@ function main(){
                 firebit.color = randomColor();
                 setTimeout(() => {
                     firebit.update();
-                }, 0);
+                }, 50);
             }
 
         },1500*(k));
