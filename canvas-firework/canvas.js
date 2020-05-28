@@ -73,6 +73,7 @@ function Circle(c){
     this.dx = (Math.random()-0.5)*20;
     this.dy = (Math.random()-0.5)*20;
     this.color = randomColor();
+    this.big = false;
 
     this.c = c;
     this.update = ()=>{
@@ -86,14 +87,34 @@ function Circle(c){
             this.dy = -this.dy;
         }
 
+        let distance = Math.sqrt(Math.pow(mouse.x-this.x,2)+Math.pow(mouse.y-this.y,2));
+
+        if (!this.big && distance<90){
+            this.radius += 30;
+
+            this.big=true;
+        }else{
+            if (this.big){
+
+                this.radius-=30;
+                this.big=false;
+            }
+        }
 
 
+        this.draw();
+
+
+    };
+
+    this.draw=()=>{
         this.c.beginPath();
         this.c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
         this.c.strokeStyle = this.color;
         // this.c.fill();
         this.c.stroke();
     };
+
 }
 
 function randomeRangle(min,max){

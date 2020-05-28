@@ -113,7 +113,7 @@ i::before{
     font-size: 0.7em;
 }
 
-h1{
+#title{
     animation: tada;
     animation-duration: 1s;
 }
