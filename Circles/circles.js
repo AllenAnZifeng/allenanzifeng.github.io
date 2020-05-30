@@ -22,12 +22,14 @@ function main(){
         mouse.x =event.x;
         mouse.y=event.y;
         // console.log(mouse);
+        // console.log('mouse');
     });
 
-    canvas.addEventListener('click', (event)=>{ // safari
-        mouse.x =event.x;
-        mouse.y=event.y;
-        // console.log(mouse);
+    window.addEventListener('touchmove', (event)=>{ // safari
+        mouse.x =event.changedTouches[0].clientX;
+        mouse.y=event.changedTouches[0].clientY;
+        console.log(mouse);
+
     });
 
 
