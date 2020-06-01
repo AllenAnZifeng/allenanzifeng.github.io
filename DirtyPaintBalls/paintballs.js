@@ -32,6 +32,20 @@ function main(){
 
     });
 
+    window.addEventListener('touchstart', (event) => { // safari
+        mouse.x = event.changedTouches[0].clientX;
+        mouse.y = event.changedTouches[0].clientY;
+        // console.log(mouse);
+
+    });
+
+    window.addEventListener('touchend', (event) => { // safari
+        mouse.x = event.changedTouches[0].clientX;
+        mouse.y = event.changedTouches[0].clientY;
+        // console.log(mouse);
+
+    });
+
 
 
 
