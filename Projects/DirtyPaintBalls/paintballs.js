@@ -50,6 +50,7 @@ function main(){
 
 
     let c = canvas.getContext('2d');
+
     //
     // // rectangle
     // c.fillStyle = 'rgba(255,0,0,0.8)';

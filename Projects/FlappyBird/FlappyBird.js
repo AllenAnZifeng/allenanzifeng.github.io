@@ -6,7 +6,7 @@ const g = 0.2;
 let score = 0;
 
 function restart() {
-    window.location = '/allenanzifeng.github.io/FlappyBird/FlappyBird.html?again=true';
+    window.location = 'FlappyBird.html';
 }
 
 function Bird(key, height = 100, speed = 0) {

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Projects</title>
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <link rel="icon" href="">
+    <link rel="stylesheet" type="text/css" href="../HomePage/css/global.css">
+    <link rel="stylesheet" type="text/css" href="projects.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="projects.js"></script>
+    <script src="https://kit.fontawesome.com/6670bd51cb.js" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+
+<div id="topHeader">
+    <div id="homeBar">
+        <div class="button" onclick="window.location='/allenanzifeng.github.io/index.html'"> Home</div>
+        <div class="button" id="menu-icon" onclick="toggleHideMenu()"> Menu <i class="fa fa-bars"></i></div>
+    </div>
+
+    <div id="menu" class="hide">
+        <div class="menu-button"><a onclick="hideMenu()" href="?dummy=$1#animations">Animations</a></div>
+        <div class="menu-button"><a onclick="hideMenu()" href="#games">Games</a></div>
+    </div>
+
+</div>
+
+<div id="contentBody" onclick="hideMenu()">
+
+
+    <div class="title">
+        Animations
+    </div>
+    <div class="anchor" id="animations"></div>
+    <div class="hr">
+        <hr>
+    </div>
+
+    <div class="sections">
+
+        <div class="card" onclick="window.location='/allenanzifeng.github.io/Projects/Collisions/collisions.html'">
+            <img src="images/collisions.png" alt="collisions">
+        </div>
+
+        <div class="card" onclick="window.location='/allenanzifeng.github.io/Projects/DirtyPaintBalls/paintballs.html'">
+            <img src="images/paintball.png" alt="paintball">
+        </div>
+    </div>
+
+
+    <div class="title">
+        Games
+    </div>
+    <div class="anchor" id="games"></div>
+    <div class="hr">
+        <hr>
+    </div>
+
+    <div class="sections">
+
+        <div class="card" onclick="window.location='/allenanzifeng.github.io/Projects/FlappyBird/FlappyBird.html'">
+            <img src="images/flappybird.jpg" alt="flappy bird">
+        </div>
+
+        <div class="card" onclick="window.location='/allenanzifeng.github.io/Projects/Reversi/Reversi.html'">
+            <img src="images/reversi.png" alt="reversi">
+        </div>
+
+    </div>
+
+    <div id="backToTop" onclick="scrollToTop()"><i class="fa fa-arrow-up" aria-hidden="true"></i></div>
+
+</div>
+
+
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
+
+
+</body>
+
+</html>
