@@ -19,19 +19,31 @@ function hideMenu() {
 }
 
 
-function scrollToTop(){
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-}
+// function scrollToTop(){
+//     document.body.scrollTop = 0;
+//     document.documentElement.scrollTop = 0;
+// }
 
 
 window.addEventListener('scroll',()=>{
     let button = document.querySelector('#backToTop');
+    let anchors = document.querySelectorAll('.anchor');
     if (document.documentElement.scrollTop>20 || document.body.scrollTop > 20){
         button.style.display='block';
     }else{
         button.style.display='none';
     }
+
+    for (let anchor of anchors){
+        let y= anchor.getBoundingClientRect().y;
+        if ( y <= 40 && (y>= -1* window.innerHeight || y >= -1* document.documentElement.clientHeight)){
+            // console.log(y,anchor.id);
+            let url = 'projects.html#'+anchor.id;
+            // console.log(url);
+            history.pushState(null,null,url);
+        }
+    }
+
 
 });
 

@@ -52,16 +52,25 @@ a{
 
 .menu-button{
     cursor: pointer;
-    margin: 0.8em 1em;
-    padding: 0.25em;
+    display: flex;
+
     font-weight: lighter;
-    font-size: 0.8em;
+
 
 }
 .menu-button:hover {
     opacity: 0.7;
 
 }
+
+.menu-button a{
+    font-size: 0.8em;
+    padding: 0.7em 1.3em;
+    flex-grow: 1;
+    text-decoration: none;
+    color: white;
+}
+
 
 .hide{
     display: none !important;
@@ -143,7 +152,7 @@ img{
 #backToTop{
     display: none;
     position: fixed;
-    bottom: 1em;
+    bottom: 2em;
     right: 1em;
     z-index: 99;
 
@@ -154,6 +163,23 @@ img{
     cursor: pointer;
     padding: 0.5em;
     border-radius: 4px;
+}
+
+.modal-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.modal-body div{
+    margin: 1em;
+    text-align: justify;
+}
+
+video{
+    width: 100%;
+    height: 100%;
 }
 
 
@@ -170,10 +196,10 @@ img{
         flex-grow: 1;
         background-color: rgba(0,0,0,0.9)
     }
-    .menu-button{
+    .menu-button>a{
         font-size: 1em;
-        margin: 15px 20px;
-        padding: 5px;
+        margin: 0.8em 1em;
+        padding: 0.25em;
     }
 
     #menu-icon{

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Projects</title>
-    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <link rel="icon" href="">
@@ -13,9 +14,69 @@
     <script src="projects.js"></script>
     <script src="https://kit.fontawesome.com/6670bd51cb.js" crossorigin="anonymous"></script>
 
-
+    <script src="zenscroll-min.js"></script>
 </head>
 <body>
+
+<!-- Modal -->
+<div class="modal fade" id="faceRecognition" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="FR_Haar">OpenCV Haar Cascades</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div><img src="images/me.jpg" alt="my face"></div>
+                <div>
+                    &emsp; This is a small projected I created following Udemy online courses. The python script used
+                    Harr
+                    Cascades for faces, eyes and mouths. However, this approach is not ideal. Single Shot MultiBox
+                    Detectors (SSD) and neural networks could possibly produce better results.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="lane_tracking" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="LT">OpenCV Haar Cascades</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <video controls>
+                        <source src="images/Tracking.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div>
+                    &emsp; This project was created when I was working as a Research Assistant in the department of
+                    Computing and Software in McMaster University. The algorithm used color vector gradients and Hough
+                    line transform to capture the perceived lanes and return the corresponding angle to the motor.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div id="topHeader">
     <div id="homeBar">
@@ -24,14 +85,14 @@
     </div>
 
     <div id="menu" class="hide">
-        <div class="menu-button"><a onclick="hideMenu()" href="?dummy=$1#animations">Animations</a></div>
+        <div class="menu-button"><a onclick="hideMenu()" href="#animations">Animations</a></div>
         <div class="menu-button"><a onclick="hideMenu()" href="#games">Games</a></div>
+        <div class="menu-button"><a onclick="hideMenu()" href="#OpenCV">OpenCV</a></div>
     </div>
 
 </div>
 
 <div id="contentBody" onclick="hideMenu()">
-
 
     <div class="title">
         Animations
@@ -73,14 +134,40 @@
 
     </div>
 
-    <div id="backToTop" onclick="scrollToTop()"><i class="fa fa-arrow-up" aria-hidden="true"></i></div>
+    <div class="title">
+        OpenCV
+    </div>
+    <div class="anchor" id="OpenCV"></div>
+    <div class="hr">
+        <hr>
+    </div>
+
+    <div class="sections">
+
+        <div class="card" data-toggle="modal" data-target="#faceRecognition">       <!-- Button trigger modal -->
+            <img src="images/face_poster.jpg" alt="facial recognition">
+        </div>
+
+        <div class="card" data-toggle="modal" data-target="#lane_tracking">       <!-- Button trigger modal -->
+            <img src="images/car.jpg" alt="car">
+        </div>
+
+    </div>
+
+    <div><a id="backToTop" href="#animations"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></div>
 
 </div>
 
 
-<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
-<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 
 
 </body>
