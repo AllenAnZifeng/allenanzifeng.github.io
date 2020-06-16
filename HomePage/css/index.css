@@ -96,11 +96,43 @@ body{
 
 }
 
+@media only screen and (min-width: 700px){
+    /* for iPAD*/
+    .button{
+        margin: 25px;
+    }
+    html{
+        font-size: 22px;
+    }
 
-/*if the screen is at least 1004px wide (768 is typical)*/
-@media only screen and (min-width: 1208px) {
+
+    #imgMe {
+        height: 14em;
+        width: auto;
+        border-radius: 50%;
+    }
+
+    .mainDiv {
+
+        padding: 2em 1.6em;
+
+    }
+
+    .social-icon {
+
+        padding: 0.4em;
+        margin: 0.4em;
+
+    }
+
+}
+
+
+
+
+@media only screen and (min-width: 1100px) {
     /* For desktops: */
-    /*Always Design for Mobile First*/
+
     .button{
         margin: 25px;
     }
