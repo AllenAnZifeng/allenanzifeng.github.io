@@ -1,0 +1,111 @@
+* {
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shaodw 0.2s ease-in-out ;
+    touch-action: manipulation; /* disable double click zoom on mobile*/
+}
+
+body {
+    align-items: stretch;
+}
+
+#contentBody {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: stretch;
+    flex-grow: 1;
+
+}
+
+#controlPanel {
+    display: flex;
+    flex-direction: column;
+
+
+}
+
+#title {
+    font-size: 1.5em;
+    font-weight: bolder;
+    margin: 0.3em 0.5em;
+
+}
+
+hr {
+    margin: 0 1em;
+}
+
+.inputContainer {
+    font-size: 0.9em;
+    display: flex;
+    flex-direction: row;
+    margin: 0.8em 0 0 1em;
+}
+
+.inputContainer > label {
+    width: 5em;
+}
+
+#buttonContainer {
+    display: flex;
+    flex-direction: row;
+    margin: 2em 1em;
+    flex-grow: 1;
+    justify-content: space-around;
+
+}
+
+button{
+    font-size: 0.8rem !important;
+}
+
+.mazeContainer {
+    margin: 0.5em 0 10em 0;
+    align-self: center;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+}
+
+.cell {
+    min-height: 0.7em;
+    min-width: 0.7em;
+    border: 1px solid lightgrey;
+}
+
+.path {
+    background-color: lightcoral;
+}
+
+.traceBack{
+    background-color: #FFD700;
+}
+
+.solvedPath {
+    background-color: lightblue;
+}
+
+.wall {
+    background-color: black;
+}
+
+@media only screen and (min-width: 800px){
+    body{
+        align-items: flex-start;
+        font-size: 1.2em;
+    }
+
+    #controlPanel{
+        min-width: 500px;
+    }
+
+    .mazeContainer {
+        margin-left: 3em;
+        align-self: flex-start;
+    }
+
+
+}
