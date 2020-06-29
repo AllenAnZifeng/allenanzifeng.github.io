@@ -32,11 +32,11 @@
 
         <div class="inputContainer">
             <label for="speed">Speed:</label>
-            <input id="speed" type="number" name="width" value="9" min="0" max="10">
+            <input id="speed" type="number" name="width" value="10" min="0" max="10">
         </div>
 
         <div id="buttonContainer">
-            <button type="button" class="btn btn-outline-primary" onclick="main()">Generate Maze</button>
+            <button type="button" id="generate" class="btn btn-outline-primary" onclick="run()">Generate Maze</button>
             <button type="button" class="btn btn-outline-primary" onclick="window.maze.showPath()">Solve Maze</button>
         </div>
 
@@ -45,10 +45,10 @@
 
 
 </div>
-<div class="outerContainer">
-    <div class="mazeContainer">
-    </div>
+
+<div class="mazeContainer">
 </div>
+
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

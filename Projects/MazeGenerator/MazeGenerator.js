@@ -7,14 +7,29 @@ const Size = {
 };
 
 
-function main() {
+function run() {
+    let button = document.getElementById('generate');
+    button.disabled = true;
+    let p = new Promise(((resolve, reject) => {
+        main().then(resolve);
+    }));
+    // console.log('run');
+    p.then(r => {
+        button.disabled = false
+    }).then(r => {
+        // console.log('here');
+    });
+    // console.log('finally');
+}
+
+
+async function main() {
     let container = document.querySelector('.mazeContainer');
     container.innerHTML = '';
     let maze = new Maze(container);
     window.maze = maze;
-
-
-    maze.initialize();
+    await maze.initialize();
+    // console.log('finished');
 
 }
 
@@ -31,7 +46,7 @@ function Maze(container) {
     this.speed = document.getElementById('speed').value * (-10) + 100;
 
 
-    this.initialize = () => {
+    this.initialize = async () => {
         for (let i = 0; i < this.ROW; i++) {
 
             let row = document.createElement('div');
@@ -73,21 +88,24 @@ function Maze(container) {
         // console.log(this.visited);
         // console.log(this.nextPath(...this.stack[0]));
 
+        // await new Promise(resolve => {
+        //     this.move().then(r => this.fillBlankWall())
+        //         .then(r => setTimeout(this.removePathBorder, 100))
+        //         .then(resolve);
+        //
+        // });
 
-
-        this.move().then(
-            r=>this.fillBlankWall()
+        await this.move().then(
+            r => this.fillBlankWall()
         ).then(
-            r=>setTimeout(this.removePathBorder, 100)
+            r => setTimeout(this.removePathBorder, 100)
         );
     };
 
 
-
-
     this.move = async () => {
 
-        while (this.stack.length !== 0){
+        while (this.stack.length !== 0) {
             let previous = this.stack[this.stack.length - 1];
             this.visited[previous[0]][previous[1]] = true;
             this.cells[previous[0]][previous[1]].classList.add('path');
@@ -106,7 +124,9 @@ function Maze(container) {
             this.makeWall(...mid);
             this.makeWall(...previous);
 
-            await new Promise(r => {setTimeout(r, this.speed)});
+            await new Promise(r => {
+                setTimeout(r, this.speed)
+            });
 
             if (current[0] === this.ROW - 2 && current[1] === this.COL - 2) {
                 this.solvedPath = this.stack.slice();
@@ -115,12 +135,13 @@ function Maze(container) {
             while (this.stack.length !== 0 && !this.nextPath(...this.stack[this.stack.length - 1])) {
 
                 let coordinate = this.stack.pop(); // trace back
-                await new Promise(r => {setTimeout(r, this.speed)});
+                await new Promise(r => {
+                    setTimeout(r, this.speed)
+                });
                 this.cells[coordinate[0]][coordinate[1]].classList.add('traceBack');
 
             }
         }
-
 
 
     };
