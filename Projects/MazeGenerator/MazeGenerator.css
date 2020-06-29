@@ -59,8 +59,9 @@ button{
 }
 
 .mazeContainer {
-    margin: 0.5em 0 10em 0;
-    align-self: center;
+
+    align-self: end;
+    padding: 0.5em 3em 10em 3em;
 }
 
 .row {
@@ -105,6 +106,7 @@ button{
     .mazeContainer {
         margin-left: 3em;
         align-self: flex-start;
+        padding: 0.5em 3em 10em 0;
     }
 
 
