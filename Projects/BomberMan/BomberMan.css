@@ -1,0 +1,41 @@
+body{
+    margin: 2em;
+}
+
+.contentContainer{
+    display: flex;
+    flex-direction: row;
+}
+
+#panel{
+    margin: 1em;
+}
+
+.row{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+.cell{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    min-width: 2em;
+    min-height: 2em;
+    border: #cccccc 1px solid;
+
+}
+
+i{
+    font-size: 1.5em;
+}
+
+.icon{
+    position: absolute;
+}
+
+*{
+    transition: all linear 200ms;
+}
