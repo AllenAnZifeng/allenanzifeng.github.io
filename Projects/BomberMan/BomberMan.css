@@ -28,7 +28,7 @@ body{
     align-items: center;
     min-width: 2em;
     min-height: 2em;
-    border: #cccccc 1px solid;
+    /*border: #cccccc 1px solid;*/
     transition: background-color linear 200ms;
 
 }
@@ -39,5 +39,6 @@ i{
 
 .icon{
     position: absolute;
-    transition: top linear 200ms,left linear 200ms;
+    transition: top linear 200ms,left linear 200ms,opacity ease-in-out 1000ms;
+    opacity: 1;
 }

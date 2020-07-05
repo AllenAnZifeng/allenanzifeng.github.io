@@ -19,49 +19,52 @@ const Size = {
     'COL': 15,
 };
 
-const Prop = {
-    'Health': '<i class="fas fa-briefcase-medical"></i>',
-    'Speed': '<i class="fas fa-bolt"></i>',
-    'Bombs': '<i class="fas fa-skull-crossbones"></i>',
-    'Range': '<i class="fas fa-flask"></i>',
+const PropIcon = {
+    'Health': '<i style="color: firebrick;font-size: 1em" class="fas fa-briefcase-medical"></i>',
+    'Speed': '<i style="color: darkkhaki;font-size: 1em" class="fas fa-bolt"></i>',
+    'Bombs': '<i style="color: black;font-size: 1em" class="fas fa-skull-crossbones"></i>',
+    'Range': '<i style="color: mediumpurple;font-size: 1em" class="fas fa-flask"></i>',
+    'Empty': '',
 };
 
+function keydown (event) {
+    keyDownListener('KeyA', 65, 'left', board.dog);
+    keyDownListener('KeyW', 87, 'up', board.dog);
+    keyDownListener('KeyS', 83, 'down', board.dog);
+    keyDownListener('KeyD', 68, 'right', board.dog);
+    keyDownListener('Space', 32, 'bomb', board.dog);
+
+    keyDownListener('ArrowLeft', 37, 'left', board.cat);
+    keyDownListener('ArrowUp', 38, 'up', board.cat);
+    keyDownListener('ArrowDown', 40, 'down', board.cat);
+    keyDownListener('ArrowRight', 39, 'right', board.cat);
+    keyDownListener('Enter', 13, 'bomb', board.cat);
+}
+
+function keyup (event) {
+
+    keyUpListener('KeyA', 65, 'left', board.dog);
+    keyUpListener('KeyW', 87, 'up', board.dog);
+    keyUpListener('KeyS', 83, 'down', board.dog);
+    keyUpListener('KeyD', 68, 'right', board.dog);
+    keyUpListener('Space', 32, 'bomb', board.dog);
+
+    keyUpListener('ArrowLeft', 37, 'left', board.cat);
+    keyUpListener('ArrowUp', 38, 'up', board.cat);
+    keyUpListener('ArrowDown', 40, 'down', board.cat);
+    keyUpListener('ArrowRight', 39, 'right', board.cat);
+    keyUpListener('Enter', 13, 'bomb', board.cat);
+
+
+}
 
 function main() {
     let board = new Board();
     board.initialize();
     window.board = board;
 
-    document.onkeydown = function (event) {
-        keyDownListener('KeyA', 65, 'left', board.dog);
-        keyDownListener('KeyW', 87, 'up', board.dog);
-        keyDownListener('KeyS', 83, 'down', board.dog);
-        keyDownListener('KeyD', 68, 'right', board.dog);
-        keyDownListener('Space', 32, 'bomb', board.dog);
-
-        keyDownListener('ArrowLeft', 37, 'left', board.cat);
-        keyDownListener('ArrowUp', 38, 'up', board.cat);
-        keyDownListener('ArrowDown', 40, 'down', board.cat);
-        keyDownListener('ArrowRight', 39, 'right', board.cat);
-        keyDownListener('Enter', 13, 'bomb', board.cat);
-    };
-
-    document.onkeyup = function (event) {
-
-        keyUpListener('KeyA', 65, 'left', board.dog);
-        keyUpListener('KeyW', 87, 'up', board.dog);
-        keyUpListener('KeyS', 83, 'down', board.dog);
-        keyUpListener('KeyD', 68, 'right', board.dog);
-        keyUpListener('Space', 32, 'bomb', board.dog);
-
-        keyUpListener('ArrowLeft', 37, 'left', board.cat);
-        keyUpListener('ArrowUp', 38, 'up', board.cat);
-        keyUpListener('ArrowDown', 40, 'down', board.cat);
-        keyUpListener('ArrowRight', 39, 'right', board.cat);
-        keyUpListener('Enter', 13, 'bomb', board.cat);
-
-
-    };
+    document.addEventListener('keydown',keydown);
+    document.addEventListener('keyup',keyup);
 
 
 }
@@ -71,6 +74,7 @@ function Board() {
     this.ROW = Size.ROW;
     this.COL = Size.COL;
     this.cells = [];
+    this.loots = ['Health', 'Speed', 'Bombs', 'Range', 'Empty'];
     this.dog = new Player(this, 4, 4, 'dog');
     this.cat = new Player(this, 10, 10, 'cat');
 
@@ -121,7 +125,7 @@ function Board() {
                 ) {
                     this.cells[i][j].classList.add('block', 'loot');
                     this.cells[i][j].innerHTML = '<i class="fas fa-cubes"></i>';
-                    this.cells[i][j].loot = new Loot(i, j);
+                    this.cells[i][j].loot = new Loot(i, j, this);
 
                 }
             }
@@ -131,12 +135,22 @@ function Board() {
 
 }
 
-function Loot(x, y) {
+function Loot(x, y, board) {
     this.x = x;
     this.y = y;
+    this.prop = board.loots[Math.floor(Math.random() * board.loots.length)];
+    // console.log(this.prop);
 
     this.destroyed = () => {
+        board.cells[x][y].classList.remove('block');
+        board.cells[x][y].innerHTML = PropIcon[this.prop];
 
+    };
+
+    this.collected = () => {
+        board.cells[x][y].classList.remove('loot');
+        board.cells[x][y].innerHTML = '';
+        board.cells[x][y].loot = null;
     };
 }
 
@@ -147,6 +161,7 @@ function Player(board, x, y, icon) {
     this.fuseTime = 1400;
     this.bombRange = 2;
     this.bombs = 2;
+    this.invincible = false;
     this.control = {
         'up': false,
         'down': false,
@@ -167,7 +182,7 @@ function Player(board, x, y, icon) {
     this.initialize = async () => {
         // this.speedBoost();
 
-        while (this.lives !== 0) {
+        while (this.lives > 0) {
             let p = new Promise((resolve, reject) => {
                 let interval = setInterval(() => {
                     for (let dir in this.control) {
@@ -217,8 +232,8 @@ function Player(board, x, y, icon) {
         if (!board.cells[tempX][tempY].classList.contains('bomb') && this.bombs > 0) {
             this.bombs -= 1;
             board.cells[tempX][tempY].classList.add('block', 'bomb');
-            board.cells[tempX][tempY].innerHTML = '<i style="color: darkorange" class="fas fa-bomb"></i>';
-            board.cells[tempX][tempY].bomb = new Bomb(tempX, tempY, this);
+            board.cells[tempX][tempY].innerHTML = '<i style="color: darkorange;z-index: 100;" class="fas fa-bomb"></i>';
+            board.cells[tempX][tempY].bomb = new Bomb(tempX, tempY, this, board);
 
         }
 
@@ -241,6 +256,43 @@ function Player(board, x, y, icon) {
         // console.log(this.x, this.y);
     };
 
+    this.injured = () => {
+        this.lives -= 1;
+        this.invincible = true;
+
+        console.log('injured' + icon + this.lives);
+
+        let red = setInterval(() => {
+            this.div.style.backgroundColor = 'red';
+        }, 100);
+
+        let white = setInterval(() => {
+            this.div.style.backgroundColor = 'white';
+        }, 200);
+
+        this.div.classList.add('animate__animated','animate__tada');
+
+        setTimeout(() => {
+            this.invincible = false;
+            clearInterval(white);
+            clearInterval(red);
+            this.div.classList.remove('animate__animated','animate__tada');
+        }, 1000);
+
+
+        if (this.lives <= 0) {
+            this.death();
+        }
+    };
+
+    this.death = () => {
+        this.div.style.opacity = '0';
+        document.removeEventListener('keydown',keydown);
+        document.removeEventListener('keyup',keyup);
+
+
+    };
+
     // this.move = (dx, dy) => {
     //     this.x += dx;
     //     this.y += dy;
@@ -255,11 +307,10 @@ function Player(board, x, y, icon) {
     //     }
     //     console.log(this.x, this.y);
     // };
-
 }
 
 
-function Bomb(x, y, player) {
+function Bomb(x, y, player, board) {
     this.x = x;
     this.y = y;
     this.bombRange = player.bombRange;
@@ -269,6 +320,23 @@ function Bomb(x, y, player) {
         this.explode()
     }, this.fuseTime);
 
+    this.explosionTrace = (x, y) => {
+        board.cells[x][y].style.backgroundColor = 'lightcoral';
+        setTimeout(() => {
+            board.cells[x][y].style.backgroundColor = 'white';
+        }, 200);
+        this.checkPlayerBombed(x, y);
+    };
+
+    this.checkPlayerBombed = (x, y) => {
+        if (board.cat.x === x && board.cat.y === y && board.cat.invincible === false) {
+            board.cat.injured();
+        }
+        if (board.dog.x === x && board.dog.y === y && board.dog.invincible === false) {
+            board.dog.injured();
+        }
+    };
+
     this.explode = () => {
         clearTimeout(this.interval);
         player.bombs += 1;
@@ -277,14 +345,11 @@ function Bomb(x, y, player) {
         board.cells[this.x][this.y].innerHTML = '';
 
         let directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+
+        this.explosionTrace(this.x, this.y);
         for (let dir of directions) {
             let tempX = this.x;
             let tempY = this.y;
-
-            board.cells[this.x][this.y].style.backgroundColor = 'lightcoral';
-            setTimeout(() => {
-                board.cells[this.x][this.y].style.backgroundColor = 'white';
-            }, 200);
 
             for (let i = 0; i < this.bombRange; i++) {
                 tempX += dir[0];
@@ -296,17 +361,17 @@ function Bomb(x, y, player) {
                         board.cells[tempX][tempY].bomb.explode();
                         break;
                     }
+                    if (board.cells[tempX][tempY].classList.contains('loot')) {
+                        board.cells[tempX][tempY].loot.destroyed();
+                        this.explosionTrace(tempX, tempY);
+                        break;
+                    }
 
                     if (board.cells[tempX][tempY].classList.contains('block')) {
                         break;
                     }
 
-                    let blockX = tempX;
-                    let blockY = tempY;
-                    board.cells[blockX][blockY].style.backgroundColor = 'lightcoral';
-                    setTimeout(() => {
-                        board.cells[blockX][blockY].style.backgroundColor = 'white';
-                    }, 200)
+                    this.explosionTrace(tempX, tempY);
                 }
             }
         }
@@ -315,9 +380,6 @@ function Bomb(x, y, player) {
 }
 
 function keyDownListener(eventCode, eventWhich, direction, player) {
-    // if (direction==='bomb'){
-    //
-    // }
     if (event.code === eventCode || event.which === eventWhich) { // browser compatibility
         player.control[direction] = true;
     }
