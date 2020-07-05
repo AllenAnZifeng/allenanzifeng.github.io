@@ -89,6 +89,7 @@ function Board() {
                 cell.classList.add('cell');
                 cell.bomb = null;
                 cell.loot = null;
+                cell.player =null;
                 row.appendChild(cell);
                 temp.push(cell);
             }
@@ -148,6 +149,24 @@ function Loot(x, y, board) {
     };
 
     this.collected = () => {
+        if (this.prop==='Health'){
+            board.cells[x][y].player.lives +=1;
+            // console.log(board.cells[x][y].player.lives,board.cells[x][y].player.div);
+        }
+
+        else if(this.prop==='Speed') {
+            board.cells[x][y].player.walkInterval -=20;
+
+        }
+        else if(this.prop==='Bombs') {
+            board.cells[x][y].player.bombs+=1;
+
+        }
+        else if(this.prop==='Range') {
+            board.cells[x][y].player.bombRange+=1;
+        }
+
+
         board.cells[x][y].classList.remove('loot');
         board.cells[x][y].innerHTML = '';
         board.cells[x][y].loot = null;
@@ -248,9 +267,18 @@ function Player(board, x, y, icon) {
             !board.cells[tempX][tempY].classList.contains('block')) {
             this.div.style.left = this.relativeDistance(tempY);
             this.div.style.top = this.relativeDistance(tempX);
+            board.cells[this.x][this.y].player=null;
             setTimeout(() => {
+
                 this.x = tempX;
                 this.y = tempY;
+                board.cells[this.x][this.y].player=this;
+
+                if (board.cells[this.x][this.y].loot!==null){
+                    board.cells[this.x][this.y].loot.collected();
+
+                }
+
             }, this.walkInterval - 50)
         }
         // console.log(this.x, this.y);
