@@ -19,6 +19,13 @@ const Size = {
     'COL': 15,
 };
 
+const Prop = {
+    'Health': '<i class="fas fa-briefcase-medical"></i>',
+    'Speed': '<i class="fas fa-bolt"></i>',
+    'Bombs': '<i class="fas fa-skull-crossbones"></i>',
+    'Range': '<i class="fas fa-flask"></i>',
+};
+
 
 function main() {
     let board = new Board();
@@ -76,7 +83,7 @@ function Board() {
             for (let j = 0; j < this.COL; j++) {
                 let cell = document.createElement('div');
                 cell.classList.add('cell');
-                cell.bomb=null;
+                cell.bomb = null;
                 cell.loot = null;
                 row.appendChild(cell);
                 temp.push(cell);
@@ -108,13 +115,13 @@ function Board() {
                 if (!this.cells[i][j].classList.contains('block')
                     && !(i === this.dog.x && j === this.dog.y)
                     && !(i === this.cat.x && j === this.cat.y)
-                    && !(i===this.dog.x-1 || i===this.cat.x+1)
-                    && !(j===this.dog.y-1 || j===this.cat.y+1)
+                    && !(i === this.dog.x - 1 || i === this.cat.x + 1)
+                    && !(j === this.dog.y - 1 || j === this.cat.y + 1)
                     && Math.random() * 10 > 6.5
                 ) {
-                    this.cells[i][j].classList.add('block');
+                    this.cells[i][j].classList.add('block', 'loot');
                     this.cells[i][j].innerHTML = '<i class="fas fa-cubes"></i>';
-                    this.cells[i][j].loot = new Loot(i,j);
+                    this.cells[i][j].loot = new Loot(i, j);
 
                 }
             }
@@ -124,12 +131,12 @@ function Board() {
 
 }
 
-function Loot(x,y) {
-    this.x=x;
-    this.y=y;
+function Loot(x, y) {
+    this.x = x;
+    this.y = y;
 
-    this.destroyed = () =>{
-        
+    this.destroyed = () => {
+
     };
 }
 
@@ -138,8 +145,8 @@ function Player(board, x, y, icon) {
     this.y = y;
     this.walkInterval = 200;
     this.fuseTime = 1400;
-    this.bombRange =2;
-    this.bombs =2;
+    this.bombRange = 2;
+    this.bombs = 2;
     this.control = {
         'up': false,
         'down': false,
@@ -207,31 +214,29 @@ function Player(board, x, y, icon) {
 
         let tempX = this.x;
         let tempY = this.y;
-        if ( !board.cells[tempX][tempY].classList.contains('bomb') && this.bombs>0){
-            this.bombs -=1;
-            board.cells[tempX][tempY].classList.add('block','bomb');
+        if (!board.cells[tempX][tempY].classList.contains('bomb') && this.bombs > 0) {
+            this.bombs -= 1;
+            board.cells[tempX][tempY].classList.add('block', 'bomb');
             board.cells[tempX][tempY].innerHTML = '<i style="color: darkorange" class="fas fa-bomb"></i>';
-            board.cells[tempX][tempY].bomb = new Bomb(tempX,tempY,this);
+            board.cells[tempX][tempY].bomb = new Bomb(tempX, tempY, this);
 
         }
 
     };
 
 
-
-
     this.move = (dx, dy) => {
-        let tempX = this.x+dx;
-        let tempY = this.y+dy;
+        let tempX = this.x + dx;
+        let tempY = this.y + dy;
 
-        if (tempX >= 0 && tempX <= Size.COL - 1 &&  tempY  >= 0 &&  tempY  <= Size.ROW - 1 &&
-            !board.cells[tempX][ tempY ].classList.contains('block')) {
-            this.div.style.left = this.relativeDistance( tempY );
+        if (tempX >= 0 && tempX <= Size.COL - 1 && tempY >= 0 && tempY <= Size.ROW - 1 &&
+            !board.cells[tempX][tempY].classList.contains('block')) {
+            this.div.style.left = this.relativeDistance(tempY);
             this.div.style.top = this.relativeDistance(tempX);
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.x = tempX;
                 this.y = tempY;
-            },this.walkInterval-50)
+            }, this.walkInterval - 50)
         }
         // console.log(this.x, this.y);
     };
@@ -254,53 +259,54 @@ function Player(board, x, y, icon) {
 }
 
 
-function Bomb(x,y,player) {
-    this.x=x;
-    this.y=y;
-    this.bombRange=player.bombRange;
-    this.fuseTime=player.fuseTime;
+function Bomb(x, y, player) {
+    this.x = x;
+    this.y = y;
+    this.bombRange = player.bombRange;
+    this.fuseTime = player.fuseTime;
 
-    this.interval = setTimeout(()=>{this.explode()},this.fuseTime);
+    this.interval = setTimeout(() => {
+        this.explode()
+    }, this.fuseTime);
 
-    this.explode = () =>{
+    this.explode = () => {
         clearTimeout(this.interval);
-        player.bombs+=1;
-        board.cells[this.x][this.y].bomb =null;
-        board.cells[this.x][this.y].classList.remove('block','bomb');
+        player.bombs += 1;
+        board.cells[this.x][this.y].bomb = null;
+        board.cells[this.x][this.y].classList.remove('block', 'bomb');
         board.cells[this.x][this.y].innerHTML = '';
 
-        let directions = [[1,0],[-1,0],[0,1],[0,-1]];
-        for (let dir of directions){
+        let directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+        for (let dir of directions) {
             let tempX = this.x;
-            let tempY =this.y;
+            let tempY = this.y;
 
-            board.cells[this.x][this.y].style.backgroundColor='lightcoral';
-            setTimeout(()=>{
-                board.cells[this.x][this.y].style.backgroundColor='white';
-            },200);
+            board.cells[this.x][this.y].style.backgroundColor = 'lightcoral';
+            setTimeout(() => {
+                board.cells[this.x][this.y].style.backgroundColor = 'white';
+            }, 200);
 
-            for (let i = 0; i <this.bombRange ; i++) {
-                tempX +=dir[0];
-                tempY+=dir[1];
-                if (tempX>=Size.ROW || tempX< 0 || tempY>= Size.COL || tempY<0 ){
+            for (let i = 0; i < this.bombRange; i++) {
+                tempX += dir[0];
+                tempY += dir[1];
+                if (tempX >= Size.ROW || tempX < 0 || tempY >= Size.COL || tempY < 0) {
                     break
-                }
-                else{
-                    if (board.cells[tempX][tempY].classList.contains('bomb')){
+                } else {
+                    if (board.cells[tempX][tempY].classList.contains('bomb')) {
                         board.cells[tempX][tempY].bomb.explode();
                         break;
                     }
 
-                    if (board.cells[tempX][tempY].classList.contains('block')){
+                    if (board.cells[tempX][tempY].classList.contains('block')) {
                         break;
                     }
 
-                    let blockX =tempX;
-                    let blockY =tempY;
-                    board.cells[blockX][blockY].style.backgroundColor='lightcoral';
-                    setTimeout(()=>{
-                        board.cells[blockX][blockY].style.backgroundColor='white';
-                    },200)
+                    let blockX = tempX;
+                    let blockY = tempY;
+                    board.cells[blockX][blockY].style.backgroundColor = 'lightcoral';
+                    setTimeout(() => {
+                        board.cells[blockX][blockY].style.backgroundColor = 'white';
+                    }, 200)
                 }
             }
         }

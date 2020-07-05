@@ -3,6 +3,8 @@ html,body{
     font-size: 16px;
     background-color: #f3f6f9;
     scroll-behavior: smooth;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 a{
