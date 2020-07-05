@@ -2,8 +2,8 @@
 // Created by Allen An at 2020/6/21
 
 const Size = {
-    ROW: 41,
-    COL: 41,
+    ROW: 21,
+    COL: 21,
 };
 
 
@@ -47,6 +47,19 @@ function Maze(container) {
 
 
     this.initialize = async () => {
+
+        if (this.ROW < 2 || this.ROW>200){
+            this.ROW = Size.ROW;
+            document.getElementById('height').value = this.ROW;
+
+        }
+        if (this.COL < 2 || this.COL>200){
+            this.COL = Size.COL;
+            document.getElementById('width').value = this.COL;
+        }
+
+
+
         for (let i = 0; i < this.ROW; i++) {
 
             let row = document.createElement('div');
