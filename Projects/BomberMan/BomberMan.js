@@ -27,7 +27,7 @@ const PropIcon = {
     'Empty': '',
 };
 
-function keydown (event) {
+function keydown(event) {
     keyDownListener('KeyA', 65, 'left', board.dog);
     keyDownListener('KeyW', 87, 'up', board.dog);
     keyDownListener('KeyS', 83, 'down', board.dog);
@@ -41,7 +41,7 @@ function keydown (event) {
     keyDownListener('Enter', 13, 'bomb', board.cat);
 }
 
-function keyup (event) {
+function keyup(event) {
 
     keyUpListener('KeyA', 65, 'left', board.dog);
     keyUpListener('KeyW', 87, 'up', board.dog);
@@ -62,12 +62,26 @@ function main() {
     let board = new Board();
     board.initialize();
     window.board = board;
+    initializeDisplay();
 
-    document.addEventListener('keydown',keydown);
-    document.addEventListener('keyup',keyup);
-
+    document.addEventListener('keydown', keydown);
+    document.addEventListener('keyup', keyup);
 
 }
+
+
+function initializeDisplay() {
+    document.getElementById('dog_health').innerText = window.board.dog.lives;
+    document.getElementById('dog_speed').innerText = window.board.dog.speed;
+    document.getElementById('dog_bombNumber').innerText = window.board.dog.bombs;
+    document.getElementById('dog_bombRange').innerText = window.board.dog.bombRange;
+
+    document.getElementById('cat_health').innerText = window.board.cat.lives;
+    document.getElementById('cat_speed').innerText = window.board.cat.speed;
+    document.getElementById('cat_bombNumber').innerText = window.board.cat.bombs;
+    document.getElementById('cat_bombRange').innerText = window.board.cat.bombRange;
+}
+
 
 function Board() {
     this.container = document.querySelector('#battleground');
@@ -89,7 +103,7 @@ function Board() {
                 cell.classList.add('cell');
                 cell.bomb = null;
                 cell.loot = null;
-                cell.player =null;
+                cell.player = null;
                 row.appendChild(cell);
                 temp.push(cell);
             }
@@ -149,27 +163,25 @@ function Loot(x, y, board) {
     };
 
     this.collected = () => {
-        if (this.prop==='Health'){
-            board.cells[x][y].player.lives +=1;
+        if (this.prop === 'Health') {
+            board.cells[x][y].player.lives += 1;
             // console.log(board.cells[x][y].player.lives,board.cells[x][y].player.div);
-        }
+        } else if (this.prop === 'Speed') {
+            board.cells[x][y].player.speed += 1;
+            board.cells[x][y].player.walkInterval -= 20;
 
-        else if(this.prop==='Speed') {
-            board.cells[x][y].player.walkInterval -=20;
+        } else if (this.prop === 'Bombs') {
+            board.cells[x][y].player.bombs += 1;
 
-        }
-        else if(this.prop==='Bombs') {
-            board.cells[x][y].player.bombs+=1;
-
-        }
-        else if(this.prop==='Range') {
-            board.cells[x][y].player.bombRange+=1;
+        } else if (this.prop === 'Range') {
+            board.cells[x][y].player.bombRange += 1;
         }
 
 
         board.cells[x][y].classList.remove('loot');
         board.cells[x][y].innerHTML = '';
         board.cells[x][y].loot = null;
+        board.cells[x][y].player.updateDisplay();
     };
 }
 
@@ -177,10 +189,12 @@ function Player(board, x, y, icon) {
     this.x = x;
     this.y = y;
     this.walkInterval = 200;
+    this.speed = 1;
     this.fuseTime = 1400;
     this.bombRange = 2;
     this.bombs = 2;
     this.invincible = false;
+    this.icon = icon;
     this.control = {
         'up': false,
         'down': false,
@@ -267,14 +281,14 @@ function Player(board, x, y, icon) {
             !board.cells[tempX][tempY].classList.contains('block')) {
             this.div.style.left = this.relativeDistance(tempY);
             this.div.style.top = this.relativeDistance(tempX);
-            board.cells[this.x][this.y].player=null;
+            board.cells[this.x][this.y].player = null;
             setTimeout(() => {
 
                 this.x = tempX;
                 this.y = tempY;
-                board.cells[this.x][this.y].player=this;
+                board.cells[this.x][this.y].player = this;
 
-                if (board.cells[this.x][this.y].loot!==null){
+                if (board.cells[this.x][this.y].loot !== null) {
                     board.cells[this.x][this.y].loot.collected();
 
                 }
@@ -284,11 +298,18 @@ function Player(board, x, y, icon) {
         // console.log(this.x, this.y);
     };
 
+    this.updateDisplay = () => {
+        document.getElementById(this.icon + '_health').innerText = this.lives;
+        document.getElementById(this.icon + '_speed').innerText = this.speed;
+        document.getElementById(this.icon + '_bombNumber').innerText = this.bombs;
+        document.getElementById(this.icon + '_bombRange').innerText = this.bombRange;
+    };
+
     this.injured = () => {
         this.lives -= 1;
         this.invincible = true;
-
-        console.log('injured' + icon + this.lives);
+        this.updateDisplay();
+        // console.log('injured' + icon + this.lives);
 
         let red = setInterval(() => {
             this.div.style.backgroundColor = 'red';
@@ -298,13 +319,13 @@ function Player(board, x, y, icon) {
             this.div.style.backgroundColor = 'white';
         }, 200);
 
-        this.div.classList.add('animate__animated','animate__tada');
+        this.div.classList.add('animate__animated', 'animate__tada');
 
         setTimeout(() => {
             this.invincible = false;
             clearInterval(white);
             clearInterval(red);
-            this.div.classList.remove('animate__animated','animate__tada');
+            this.div.classList.remove('animate__animated', 'animate__tada');
         }, 1000);
 
 
@@ -315,8 +336,8 @@ function Player(board, x, y, icon) {
 
     this.death = () => {
         this.div.style.opacity = '0';
-        document.removeEventListener('keydown',keydown);
-        document.removeEventListener('keyup',keyup);
+        document.removeEventListener('keydown', keydown);
+        document.removeEventListener('keyup', keyup);
 
 
     };

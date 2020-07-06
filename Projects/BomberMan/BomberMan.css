@@ -12,7 +12,69 @@ body{
 }
 
 #panel{
-    margin: 1em;
+    margin: 0 4em;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+#info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: #cccccc solid 1px;
+    padding: 1em 2em;
+}
+
+#title{
+    margin-bottom: 0.3em;
+}
+
+.contentBox{
+    display: flex;
+    flex-direction: row;
+}
+
+.icons{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.icons i{
+    font-size: 1.2rem !important;
+    margin: 0.3em 1em 0.3em 0;
+
+}
+
+.texts{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;.
+
+}
+
+
+.texts span{
+    margin: 0.4em 0;
+}
+
+
+
+#statsContainer{
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.stats{
+    border: #cccccc solid 1px;
+    padding: 1em 2em;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .row{

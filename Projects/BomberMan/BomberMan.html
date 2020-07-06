@@ -27,12 +27,67 @@
 
     <div id="panel">
         <div id="info">
-            <div>Instructions</div>
-            <div>Dog: awsd + space</div>
-            <div>Cat: arrows + enter</div>
+            <div id="title"><b>Instructions</b></div>
+            <div class="contentBox">
+                <div class="icons">
+                    <i style="color: lightcoral" class="fas fa-dog"></i>
+                    <i style="color: lightblue" class="fas fa-cat"></i>
+                    <i style="color: firebrick" class="fas fa-briefcase-medical"></i>
+                    <i style="color: darkkhaki" class="fas fa-bolt"></i>
+                    <i style="color: black" class="fas fa-skull-crossbones"></i>
+                    <i style="color: mediumpurple" class="fas fa-flask"></i>
+                </div>
+                <div class="texts">
+                    <span>WASD + Space</span>
+                    <span>Arrows + Enter</span>
+                    <span>Health</span>
+                    <span>Speed</span>
+                    <span>Bomb Number</span>
+                    <span>Bomb Range</span>
+                </div>
+            </div>
         </div>
 
-        <div id="stats"></div>
+        <div id="statsContainer">
+            <div class="stats" style="margin-right: 1em">
+                <div style="margin-bottom: 1em"><i style="color: lightcoral" class="fas fa-dog"></i></div>
+                <div class="contentBox">
+                    <div class="icons">
+                        <i style="color: firebrick" class="fas fa-briefcase-medical"></i>
+                        <i style="color: darkkhaki" class="fas fa-bolt"></i>
+                        <i style="color: black" class="fas fa-skull-crossbones"></i>
+                        <i style="color: mediumpurple" class="fas fa-flask"></i>
+                    </div>
+                    <div class="texts">
+                        <span id="dog_health"></span>
+                        <span id="dog_speed"></span>
+                        <span id="dog_bombNumber"></span>
+                        <span id="dog_bombRange"></span>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="stats">
+                <div style="margin-bottom: 1em"><i style="color: lightblue" class="fas fa-cat"></i></div>
+                <div class="contentBox">
+                    <div class="icons">
+                        <i style="color: firebrick" class="fas fa-briefcase-medical"></i>
+                        <i style="color: darkkhaki" class="fas fa-bolt"></i>
+                        <i style="color: black" class="fas fa-skull-crossbones"></i>
+                        <i style="color: mediumpurple" class="fas fa-flask"></i>
+                    </div>
+                    <div class="texts">
+                        <span id="cat_health"></span>
+                        <span id="cat_speed"></span>
+                        <span id="cat_bombNumber"></span>
+                        <span id="cat_bombRange"></span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
 </div>
