@@ -88,8 +88,8 @@ function Board() {
     this.ROW = Size.ROW;
     this.COL = Size.COL;
     this.cells = [];
-    // this.loots = ['Health', 'Speed', 'Bombs', 'Range', 'Empty'];
-    this.loots = ['Health', 'Speed', 'Bombs'];
+    this.loots = ['Health', 'Speed', 'Bombs', 'Range', 'Empty'];
+    // this.loots = ['Health', 'Speed', 'Bombs'];
     // this.loots = ['Speed'];
     this.dog = new Player(this, 4, 4, 'dog');
     this.cat = new Player(this, 10, 10, 'cat');
