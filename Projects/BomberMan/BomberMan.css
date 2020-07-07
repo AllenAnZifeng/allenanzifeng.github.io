@@ -16,23 +16,22 @@ body{
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    max-width: 500px;
 }
 
-#info{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    border: #cccccc solid 1px;
-    padding: 1em 2em;
-}
-
-#title{
-    margin-bottom: 0.3em;
-}
 
 .contentBox{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+}
+
+.contentBox div{
+    margin: 0 0 0.4em 0;
+}
+
+.contentBox div i{
+    font-size: 1.2em;
+    width: 2em;
 }
 
 .icons{
@@ -47,19 +46,13 @@ body{
 
 }
 
-.texts{
+#info{
     display: flex;
     flex-direction: column;
-    align-items: flex-start;.
-
+    align-items: flex-start;
+    border: #cccccc solid 1px;
+    padding: 1em 2em;
 }
-
-
-.texts span{
-    margin: 0.4em 0;
-}
-
-
 
 #statsContainer{
     margin-top: 1em;
@@ -92,7 +85,6 @@ body{
     min-height: 2em;
     /*border: #cccccc 1px solid;*/
     transition: background-color linear 200ms;
-
 }
 
 i{
@@ -101,6 +93,6 @@ i{
 
 .icon{
     position: absolute;
-    transition: top linear 200ms,left linear 200ms,opacity ease-in-out 1000ms;
+
     opacity: 1;
 }

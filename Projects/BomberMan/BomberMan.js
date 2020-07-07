@@ -32,13 +32,13 @@ function keydown(event) {
     keyDownListener('KeyW', 87, 'up', board.dog);
     keyDownListener('KeyS', 83, 'down', board.dog);
     keyDownListener('KeyD', 68, 'right', board.dog);
-    keyDownListener('Space', 32, 'bomb', board.dog);
+    keyDownBombListener('Space', 32, 'bomb', board.dog);
 
     keyDownListener('ArrowLeft', 37, 'left', board.cat);
     keyDownListener('ArrowUp', 38, 'up', board.cat);
     keyDownListener('ArrowDown', 40, 'down', board.cat);
     keyDownListener('ArrowRight', 39, 'right', board.cat);
-    keyDownListener('Enter', 13, 'bomb', board.cat);
+    keyDownBombListener('Enter', 13, 'bomb', board.cat);
 }
 
 function keyup(event) {
@@ -47,13 +47,13 @@ function keyup(event) {
     keyUpListener('KeyW', 87, 'up', board.dog);
     keyUpListener('KeyS', 83, 'down', board.dog);
     keyUpListener('KeyD', 68, 'right', board.dog);
-    keyUpListener('Space', 32, 'bomb', board.dog);
+    keyUpBombListener('Space', 32, 'bomb', board.dog);
 
     keyUpListener('ArrowLeft', 37, 'left', board.cat);
     keyUpListener('ArrowUp', 38, 'up', board.cat);
     keyUpListener('ArrowDown', 40, 'down', board.cat);
     keyUpListener('ArrowRight', 39, 'right', board.cat);
-    keyUpListener('Enter', 13, 'bomb', board.cat);
+    keyUpBombListener('Enter', 13, 'bomb', board.cat);
 
 
 }
@@ -88,7 +88,9 @@ function Board() {
     this.ROW = Size.ROW;
     this.COL = Size.COL;
     this.cells = [];
-    this.loots = ['Health', 'Speed', 'Bombs', 'Range', 'Empty'];
+    // this.loots = ['Health', 'Speed', 'Bombs', 'Range', 'Empty'];
+    this.loots = ['Health', 'Speed', 'Bombs'];
+    // this.loots = ['Speed'];
     this.dog = new Player(this, 4, 4, 'dog');
     this.cat = new Player(this, 10, 10, 'cat');
 
@@ -157,7 +159,7 @@ function Loot(x, y, board) {
     // console.log(this.prop);
 
     this.destroyed = () => {
-        board.cells[x][y].classList.remove('block');
+        board.cells[x][y].classList.remove('block','loot');
         board.cells[x][y].innerHTML = PropIcon[this.prop];
 
     };
@@ -166,9 +168,12 @@ function Loot(x, y, board) {
         if (this.prop === 'Health') {
             board.cells[x][y].player.lives += 1;
             // console.log(board.cells[x][y].player.lives,board.cells[x][y].player.div);
-        } else if (this.prop === 'Speed') {
+        } else if (this.prop === 'Speed' && board.cells[x][y].player.walkInterval>50) {
             board.cells[x][y].player.speed += 1;
             board.cells[x][y].player.walkInterval -= 20;
+             // console.log('top linear ' + board.cells[x][y].player.walkInterval + 'ms ,left linear ' +board.cells[x][y].player.walkInterval + 'ms,,opacity ease-in-out 1000ms');
+            board.cells[x][y].player.div.style.transition = 'top linear ' + board.cells[x][y].player.walkInterval + 'ms ,left linear ' +board.cells[x][y].player.walkInterval + 'ms,opacity ease-in-out 1000ms';
+
 
         } else if (this.prop === 'Bombs') {
             board.cells[x][y].player.bombs += 1;
@@ -200,10 +205,12 @@ function Player(board, x, y, icon) {
         'down': false,
         'left': false,
         'right': false,
-        'bomb': false,
     };
+    this.bomb = false;
     this.lives = 2;
     this.div = document.querySelector('#' + icon);
+    this.div.style.transition = 'top linear ' + this.walkInterval + 'ms ,left linear ' + this.walkInterval + 'ms,opacity ease-in-out 1000ms';
+
 
     this.relativeDistance = (x) => {
         return (x + 1) * 2 + 0.2 + 'em'
@@ -213,50 +220,88 @@ function Player(board, x, y, icon) {
     this.div.style.top = this.relativeDistance(this.y);
 
     this.initialize = async () => {
-        // this.speedBoost();
+        this.bombInterval = setInterval(() => {
+            if (this.bomb === true) {
+                this.placeBomb();
+
+            }
+        }, 20);
 
         while (this.lives > 0) {
-            let p = new Promise((resolve, reject) => {
+            let p_move = new Promise((resolve) => {
                 let interval = setInterval(() => {
                     for (let dir in this.control) {
                         if (this.control[dir] === true) {
-                            if (dir !== 'bomb') {
-                                this.move(...directionDict[dir]);
-                                clearInterval(interval);
-                                resolve();
-                                // break;
-                            } else {
-                                clearInterval(interval);
-                                this.placeBomb();
-                                reject();
-                            }
-
-
+                            this.move(...directionDict[dir]);
+                            clearInterval(interval);
+                            resolve();
                         }
                     }
                 }, 0);
 
 
             });
-            await p.then(
+            await p_move.then(
                 async (r) => {
                     await new Promise(r => {
                         setTimeout(r, this.walkInterval)
                     });
-
-                },
-                () => {
-                    console.log('bomb');
                 }
-            )
+            );
+
+            // let p_bomb = new Promise((resolve => {
+            //     let interval = setInterval(()=>{
+            //         if (this.bomb===true){
+            //
+            //         }
+            //
+            //     },0)
+            // }))
+
+
         }
     };
 
-    this.speedBoost = () => {
-        this.walkInterval -= 100;
-        this.div.style.transition = 'top linear ' + this.walkInterval + 'ms ,left linear ' + this.walkInterval + 'ms';
+    // this.initialize = async () => {
+    //     // this.speedBoost();
+    //
+    //     while (this.lives > 0) {
+    //         let p = new Promise((resolve, reject) => {
+    //             let interval = setInterval(() => {
+    //                 for (let dir in this.control) {
+    //                     if (this.control[dir] === true) {
+    //                         if (dir !== 'bomb') {
+    //                             this.move(...directionDict[dir]);
+    //                             clearInterval(interval);
+    //                             resolve();
+    //                             // break;
+    //                         } else {
+    //                             clearInterval(interval);
+    //                             this.placeBomb();
+    //                             reject();
+    //                         }
+    //
+    //
+    //                     }
+    //                 }
+    //             }, 0);
+    //
+    //
+    //         });
+    //         await p.then(
+    //             async (r) => {
+    //                 await new Promise(r => {
+    //                     setTimeout(r, this.walkInterval)
+    //                 });
+    //
+    //             },
+    //             () => {
+    //                 console.log('bomb');
+    //             }
+    //         )
+    //     }
+    // };
 
-    };
 
     this.placeBomb = () => {
 
@@ -336,6 +381,7 @@ function Player(board, x, y, icon) {
 
     this.death = () => {
         this.div.style.opacity = '0';
+        clearInterval(this.bombInterval);
         document.removeEventListener('keydown', keydown);
         document.removeEventListener('keyup', keyup);
 
@@ -430,24 +476,38 @@ function Bomb(x, y, player, board) {
 
 function keyDownListener(eventCode, eventWhich, direction, player) {
     if (event.code === eventCode || event.which === eventWhich) { // browser compatibility
+        event.preventDefault();
         player.control[direction] = true;
     }
 
-    if (event.code === 'ArrowUp' || event.which === 38 || event.code === 'ArrowDown' || event.which === 40) {
-        event.preventDefault();
-    }
 }
 
 function keyUpListener(eventCode, eventWhich, direction, player) {
 
     if (event.code === eventCode || event.which === eventWhich) { // browser compatibility
+        event.preventDefault();
         player.control[direction] = false;
         // console.log('keyup');
     }
 
-    if (event.code === 'ArrowUp' || event.which === 38 || event.code === 'ArrowDown' || event.which === 40) {
+}
+
+function keyDownBombListener(eventCode, eventWhich, direction, player) {
+    if (event.code === eventCode || event.which === eventWhich) { // browser compatibility
         event.preventDefault();
+        player.bomb = true;
     }
+
+}
+
+function keyUpBombListener(eventCode, eventWhich, direction, player) {
+
+    if (event.code === eventCode || event.which === eventWhich) { // browser compatibility
+        event.preventDefault();
+        player.bomb = false;
+
+    }
+
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
