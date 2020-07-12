@@ -228,14 +228,20 @@ function Player(board, x, y, icon) {
         }, 20);
 
         while (this.lives > 0) {
+            let flag = false;
             let p_move = new Promise((resolve) => {
                 let interval = setInterval(() => {
+
                     for (let dir in this.control) {
                         if (this.control[dir] === true) {
+                            flag = true;
+                            console.log(dir);
                             this.move(...directionDict[dir]);
-                            clearInterval(interval);
-                            resolve();
                         }
+                    }
+                    if (flag){
+                        clearInterval(interval);
+                        resolve();
                     }
                 }, 0);
 
@@ -248,59 +254,8 @@ function Player(board, x, y, icon) {
                     });
                 }
             );
-
-            // let p_bomb = new Promise((resolve => {
-            //     let interval = setInterval(()=>{
-            //         if (this.bomb===true){
-            //
-            //         }
-            //
-            //     },0)
-            // }))
-
-
         }
     };
-
-    // this.initialize = async () => {
-    //     // this.speedBoost();
-    //
-    //     while (this.lives > 0) {
-    //         let p = new Promise((resolve, reject) => {
-    //             let interval = setInterval(() => {
-    //                 for (let dir in this.control) {
-    //                     if (this.control[dir] === true) {
-    //                         if (dir !== 'bomb') {
-    //                             this.move(...directionDict[dir]);
-    //                             clearInterval(interval);
-    //                             resolve();
-    //                             // break;
-    //                         } else {
-    //                             clearInterval(interval);
-    //                             this.placeBomb();
-    //                             reject();
-    //                         }
-    //
-    //
-    //                     }
-    //                 }
-    //             }, 0);
-    //
-    //
-    //         });
-    //         await p.then(
-    //             async (r) => {
-    //                 await new Promise(r => {
-    //                     setTimeout(r, this.walkInterval)
-    //                 });
-    //
-    //             },
-    //             () => {
-    //                 console.log('bomb');
-    //             }
-    //         )
-    //     }
-    // };
 
 
     this.placeBomb = () => {
@@ -387,21 +342,6 @@ function Player(board, x, y, icon) {
 
 
     };
-
-    // this.move = (dx, dy) => {
-    //     this.x += dx;
-    //     this.y += dy;
-    //
-    //     if (this.x >= 0 && this.x <= Size.COL - 1 && this.y >= 0 && this.y <= Size.ROW - 1 &&
-    //         !board.cells[this.x][this.y].classList.contains('block')) {
-    //         this.div.style.left = this.relativeDistance(this.y);
-    //         this.div.style.top = this.relativeDistance(this.x);
-    //     } else {
-    //         this.x -= dx;
-    //         this.y -= dy;
-    //     }
-    //     console.log(this.x, this.y);
-    // };
 }
 
 
