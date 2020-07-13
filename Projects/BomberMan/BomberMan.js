@@ -91,8 +91,10 @@ function Board() {
     this.loots = ['Health', 'Speed', 'Bombs', 'Range', 'Empty'];
     // this.loots = ['Health', 'Speed', 'Bombs'];
     // this.loots = ['Speed'];
+    this.cellSize = 2; // in css, .cell min-width 2em
     this.dog = new Player(this, 4, 4, 'dog');
     this.cat = new Player(this, 10, 10, 'cat');
+
 
     this.initialize = () => {
         for (let i = 0; i < this.ROW; i++) {
@@ -159,7 +161,7 @@ function Loot(x, y, board) {
     // console.log(this.prop);
 
     this.destroyed = () => {
-        board.cells[x][y].classList.remove('block','loot');
+        board.cells[x][y].classList.remove('block', 'loot');
         board.cells[x][y].innerHTML = PropIcon[this.prop];
 
     };
@@ -168,11 +170,11 @@ function Loot(x, y, board) {
         if (this.prop === 'Health') {
             board.cells[x][y].player.lives += 1;
             // console.log(board.cells[x][y].player.lives,board.cells[x][y].player.div);
-        } else if (this.prop === 'Speed' && board.cells[x][y].player.walkInterval>50) {
+        } else if (this.prop === 'Speed' && board.cells[x][y].player.step <= 0.1) {
             board.cells[x][y].player.speed += 1;
-            board.cells[x][y].player.walkInterval -= 20;
-             // console.log('top linear ' + board.cells[x][y].player.walkInterval + 'ms ,left linear ' +board.cells[x][y].player.walkInterval + 'ms,,opacity ease-in-out 1000ms');
-            board.cells[x][y].player.div.style.transition = 'top linear ' + board.cells[x][y].player.walkInterval + 'ms ,left linear ' +board.cells[x][y].player.walkInterval + 'ms,opacity ease-in-out 1000ms';
+            board.cells[x][y].player.step += 0.01;
+            // console.log('top linear ' + board.cells[x][y].player.walkInterval + 'ms ,left linear ' +board.cells[x][y].player.walkInterval + 'ms,,opacity ease-in-out 1000ms');
+            // board.cells[x][y].player.div.style.transition = 'top linear ' + board.cells[x][y].player.walkInterval + 'ms ,left linear ' + board.cells[x][y].player.walkInterval + 'ms,opacity ease-in-out 1000ms';
 
 
         } else if (this.prop === 'Bombs') {
@@ -193,13 +195,14 @@ function Loot(x, y, board) {
 function Player(board, x, y, icon) {
     this.x = x;
     this.y = y;
-    this.walkInterval = 200;
     this.speed = 1;
     this.fuseTime = 1400;
     this.bombRange = 2;
     this.bombs = 2;
     this.invincible = false;
     this.icon = icon;
+    this.board = board;
+    this.lastKey = null;
     this.control = {
         'up': false,
         'down': false,
@@ -208,18 +211,19 @@ function Player(board, x, y, icon) {
     };
     this.bomb = false;
     this.lives = 2;
+    this.step = 0.05;
     this.div = document.querySelector('#' + icon);
-    this.div.style.transition = 'top linear ' + this.walkInterval + 'ms ,left linear ' + this.walkInterval + 'ms,opacity ease-in-out 1000ms';
+    this.div.style.transition = 'opacity ease-in-out 1000ms';
 
 
     this.relativeDistance = (x) => {
-        return (x + 1) * 2 + 0.2 + 'em'
+        return (x + 1) * this.board.cellSize + 0.2;
     };
 
-    this.div.style.left = this.relativeDistance(this.x);
-    this.div.style.top = this.relativeDistance(this.y);
+    this.div.style.left = this.relativeDistance(this.x) +'em';
+    this.div.style.top = this.relativeDistance(this.y) +'em';
 
-    this.initialize = async () => {
+    this.initialize = () => {
         this.bombInterval = setInterval(() => {
             if (this.bomb === true) {
                 this.placeBomb();
@@ -227,34 +231,38 @@ function Player(board, x, y, icon) {
             }
         }, 20);
 
-        while (this.lives > 0) {
-            let flag = false;
-            let p_move = new Promise((resolve) => {
-                let interval = setInterval(() => {
-
-                    for (let dir in this.control) {
-                        if (this.control[dir] === true) {
-                            flag = true;
-                            console.log(dir);
-                            this.move(...directionDict[dir]);
+        this.moveInterval = setInterval(() => {
+            let trueDir = [];
+            for (let dir in this.control) {
+                if (this.control[dir] === true) {
+                    trueDir.push(dir);
+                }
+            }
+            if (trueDir.length!==0){
+                if (trueDir.length===1){
+                    console.log(1,trueDir[0]);
+                    this.move(...directionDict[trueDir[0]]);
+                }
+                else{
+                    console.log('>=2');
+                    for (let dir of trueDir){
+                        console.log(dir);
+                        if ( this.lastKey ===dir){
+                            console.log(this.lastKey);
+                            this.move(...directionDict[this.lastKey]);
                         }
                     }
-                    if (flag){
-                        clearInterval(interval);
-                        resolve();
-                    }
-                }, 0);
-
-
-            });
-            await p_move.then(
-                async (r) => {
-                    await new Promise(r => {
-                        setTimeout(r, this.walkInterval)
-                    });
                 }
-            );
-        }
+            }
+
+
+
+            if (this.lives <= 0) {
+                clearInterval(this.moveInterval);
+            }
+
+        }, 0);
+
     };
 
 
@@ -262,41 +270,108 @@ function Player(board, x, y, icon) {
 
         let tempX = this.x;
         let tempY = this.y;
-        if (!board.cells[tempX][tempY].classList.contains('bomb') && this.bombs > 0) {
+        if (!this.board.cells[tempX][tempY].classList.contains('bomb') && this.bombs > 0) {
             this.bombs -= 1;
-            board.cells[tempX][tempY].classList.add('block', 'bomb');
-            board.cells[tempX][tempY].innerHTML = '<i style="color: darkorange;z-index: 100;" class="fas fa-bomb"></i>';
-            board.cells[tempX][tempY].bomb = new Bomb(tempX, tempY, this, board);
+            this.board.cells[tempX][tempY].classList.add('block', 'bomb');
+            this.board.cells[tempX][tempY].innerHTML = '<i style="color: darkorange;z-index: 100;" class="fas fa-bomb"></i>';
+            this.board.cells[tempX][tempY].bomb = new Bomb(tempX, tempY, this, board);
 
         }
 
     };
 
+    this.justify = (dx,dy) =>{
+        if (dy===0){
+            let offset = parseFloat(this.div.style.left) -this.relativeDistance(this.y);
+            if (offset>=this.step){
+                this.div.style.left = parseFloat(this.div.style.left) -  this.step + 'em';
+            }
+            else if (offset <= -this.step){
+                this.div.style.left = parseFloat(this.div.style.left) +  this.step + 'em';
+            }
+        }
+        if (dx===0){
+            let offset = parseFloat(this.div.style.top) -this.relativeDistance(this.x);
+            if (offset>=this.step){
+                this.div.style.top = parseFloat(this.div.style.top) -  this.step + 'em';
+            }
+            else if (offset <= -this.step){
+                this.div.style.top = parseFloat(this.div.style.top) +  this.step + 'em';
+            }
+        }
+    };
 
-    this.move = (dx, dy) => {
+
+    this.move = (dx, dy) => { // in css size of .cell 2em
         let tempX = this.x + dx;
         let tempY = this.y + dy;
 
         if (tempX >= 0 && tempX <= Size.COL - 1 && tempY >= 0 && tempY <= Size.ROW - 1 &&
-            !board.cells[tempX][tempY].classList.contains('block')) {
-            this.div.style.left = this.relativeDistance(tempY);
-            this.div.style.top = this.relativeDistance(tempX);
-            board.cells[this.x][this.y].player = null;
-            setTimeout(() => {
+            !this.board.cells[tempX][tempY].classList.contains('block')) {
+            this.div.style.left = parseFloat(this.div.style.left) + dy * this.step + 'em';
+            this.div.style.top = parseFloat(this.div.style.top) + dx * this.step + 'em';
 
-                this.x = tempX;
-                this.y = tempY;
-                board.cells[this.x][this.y].player = this;
+            this.justify(dx,dy);
+            if (Math.abs(parseFloat(this.div.style.left) -this.relativeDistance(this.y)) > 0.5 * this.board.cellSize ||
+                Math.abs(parseFloat(this.div.style.top) -  this.relativeDistance(this.x)) > 0.5 * this.board.cellSize) {
 
-                if (board.cells[this.x][this.y].loot !== null) {
-                    board.cells[this.x][this.y].loot.collected();
+                this.board.cells[this.x][this.y].player = null;
+
+                if (Math.abs(parseFloat(this.div.style.left) - this.relativeDistance(this.y)) > 0.5 * this.board.cellSize) {
+                    this.y = tempY;
+                }
+                if (Math.abs(parseFloat(this.div.style.top) - this.relativeDistance(this.x)) > 0.5 * this.board.cellSize) {
+                    this.x = tempX;
+                }
+                // console.log(this.x,this.y);
+                // console.log(this.div.style.top,this.div.style.left);
+
+                this.board.cells[this.x][this.y].player = this;
+                if (this.board.cells[this.x][this.y].loot !== null) {
+                    this.board.cells[this.x][this.y].loot.collected();
 
                 }
 
-            }, this.walkInterval - 50)
+            }
         }
-        // console.log(this.x, this.y);
+
+        else if (Math.abs(parseFloat(this.div.style.left) -this.relativeDistance(this.y)) >=0.1 ){
+            this.div.style.left = parseFloat(this.div.style.left) + dy * 0.05 + 'em';
+            // this.justify(dx,dy);
+        }
+        else if ( Math.abs(parseFloat(this.div.style.top) -  this.relativeDistance(this.x)) >= 0.1){
+            this.div.style.top = parseFloat(this.div.style.top) + dx * 0.05 + 'em';
+            // this.justify(dx,dy);
+        }
+
+
     };
+
+
+    // this.move = (dx, dy) => {
+    //     let tempX = this.x + dx;
+    //     let tempY = this.y + dy;
+    //
+    //     if (tempX >= 0 && tempX <= Size.COL - 1 && tempY >= 0 && tempY <= Size.ROW - 1 &&
+    //         !board.cells[tempX][tempY].classList.contains('block')) {
+    //         this.div.style.left = this.relativeDistance(tempY);
+    //         this.div.style.top = this.relativeDistance(tempX);
+    //         board.cells[this.x][this.y].player = null;
+    //         setTimeout(() => {
+    //
+    //             this.x = tempX;
+    //             this.y = tempY;
+    //             board.cells[this.x][this.y].player = this;
+    //
+    //             if (board.cells[this.x][this.y].loot !== null) {
+    //                 board.cells[this.x][this.y].loot.collected();
+    //
+    //             }
+    //
+    //         }, this.walkInterval - 50)
+    //     }
+    //     // console.log(this.x, this.y);
+    // };
 
     this.updateDisplay = () => {
         document.getElementById(this.icon + '_health').innerText = this.lives;
@@ -418,6 +493,8 @@ function keyDownListener(eventCode, eventWhich, direction, player) {
     if (event.code === eventCode || event.which === eventWhich) { // browser compatibility
         event.preventDefault();
         player.control[direction] = true;
+        player.lastKey = direction;
+        // console.log('keydown');
     }
 
 }
@@ -427,7 +504,8 @@ function keyUpListener(eventCode, eventWhich, direction, player) {
     if (event.code === eventCode || event.which === eventWhich) { // browser compatibility
         event.preventDefault();
         player.control[direction] = false;
-        // console.log('keyup');
+
+
     }
 
 }
