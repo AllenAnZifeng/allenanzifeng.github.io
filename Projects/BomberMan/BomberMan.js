@@ -312,7 +312,7 @@ function Player(board, x, y, icon) {
             Math.abs(parseFloat(this.div.style.top) - this.relativeDistance(this.x)) > percentage * this.board.cellSize) {
 
             this.board.cells[this.x][this.y].player = null;
-
+            this.board.cells[this.x][this.y].style.backgroundColor= 'white';
             if (Math.abs(parseFloat(this.div.style.left) - this.relativeDistance(this.y)) > percentage * this.board.cellSize) {
                 this.y = tempY;
             }
@@ -322,9 +322,12 @@ function Player(board, x, y, icon) {
 
 
             this.board.cells[this.x][this.y].player = this;
+            this.board.cells[this.x][this.y].style.backgroundColor= 'green';
             if (this.board.cells[this.x][this.y].loot !== null) {
                 this.board.cells[this.x][this.y].loot.collected();
             }
+
+
             console.log(this.x, this.y);
             console.log(this.div.style.top, this.div.style.left);
         }
@@ -396,31 +399,6 @@ function Player(board, x, y, icon) {
     };
 
 
-    // this.move = (dx, dy) => {
-    //     let tempX = this.x + dx;
-    //     let tempY = this.y + dy;
-    //
-    //     if (tempX >= 0 && tempX <= Size.COL - 1 && tempY >= 0 && tempY <= Size.ROW - 1 &&
-    //         !board.cells[tempX][tempY].classList.contains('block')) {
-    //         this.div.style.left = this.relativeDistance(tempY);
-    //         this.div.style.top = this.relativeDistance(tempX);
-    //         board.cells[this.x][this.y].player = null;
-    //         setTimeout(() => {
-    //
-    //             this.x = tempX;
-    //             this.y = tempY;
-    //             board.cells[this.x][this.y].player = this;
-    //
-    //             if (board.cells[this.x][this.y].loot !== null) {
-    //                 board.cells[this.x][this.y].loot.collected();
-    //
-    //             }
-    //
-    //         }, this.walkInterval - 50)
-    //     }
-    //     // console.log(this.x, this.y);
-    // };
-
     this.updateDisplay = () => {
         document.getElementById(this.icon + '_health').innerText = this.lives;
         document.getElementById(this.icon + '_speed').innerText = this.speed;
@@ -462,7 +440,6 @@ function Player(board, x, y, icon) {
         clearInterval(this.bombInterval);
         document.removeEventListener('keydown', keydown);
         document.removeEventListener('keyup', keyup);
-
 
     };
 }
@@ -545,7 +522,7 @@ function keyDownListener(eventCode, eventWhich, direction, player) {
             player.secondLastKey = player.lastKey;
             player.lastKey = direction;
         }
-        player.lastKey = direction;
+
 
     }
 
