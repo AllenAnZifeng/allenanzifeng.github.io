@@ -140,7 +140,7 @@ function Board() {
                     && !(i === this.cat.x && j === this.cat.y)
                     && !(i === this.dog.x - 1 || i === this.cat.x + 1)
                     && !(j === this.dog.y - 1 || j === this.cat.y + 1)
-                    && Math.random() * 10 > 6.5
+                    && Math.random() * 10 > 8.5
                 ) {
                     this.cells[i][j].classList.add('block', 'loot');
                     this.cells[i][j].innerHTML = '<i class="fas fa-cubes"></i>';
@@ -203,6 +203,7 @@ function Player(board, x, y, icon) {
     this.icon = icon;
     this.board = board;
     this.lastKey = null;
+    this.secondLastKey = null;
     this.control = {
         'up': false,
         'down': false,
@@ -211,7 +212,7 @@ function Player(board, x, y, icon) {
     };
     this.bomb = false;
     this.lives = 2;
-    this.step = 0.05;
+    this.step = 0.08;
     this.div = document.querySelector('#' + icon);
     this.div.style.transition = 'opacity ease-in-out 1000ms';
 
@@ -220,8 +221,8 @@ function Player(board, x, y, icon) {
         return (x + 1) * this.board.cellSize + 0.2;
     };
 
-    this.div.style.left = this.relativeDistance(this.x) +'em';
-    this.div.style.top = this.relativeDistance(this.y) +'em';
+    this.div.style.left = this.relativeDistance(this.x) + 'em';
+    this.div.style.top = this.relativeDistance(this.y) + 'em';
 
     this.initialize = () => {
         this.bombInterval = setInterval(() => {
@@ -238,30 +239,31 @@ function Player(board, x, y, icon) {
                     trueDir.push(dir);
                 }
             }
-            if (trueDir.length!==0){
-                if (trueDir.length===1){
-                    console.log(1,trueDir[0]);
+            if (trueDir.length > 0) {
+                if (trueDir.length === 1) {
                     this.move(...directionDict[trueDir[0]]);
-                }
-                else{
-                    console.log('>=2');
-                    for (let dir of trueDir){
-                        console.log(dir);
-                        if ( this.lastKey ===dir){
-                            console.log(this.lastKey);
-                            this.move(...directionDict[this.lastKey]);
+                } else {
+
+
+                    if (trueDir.includes(this.lastKey) && this.move(...directionDict[this.lastKey])) {
+
+                    }
+                    else{
+                        if (trueDir.includes(this.secondLastKey)){
+                            this.move(...directionDict[this.secondLastKey])
                         }
                     }
+
+
                 }
             }
-
 
 
             if (this.lives <= 0) {
                 clearInterval(this.moveInterval);
             }
 
-        }, 0);
+        }, 10);
 
     };
 
@@ -280,24 +282,51 @@ function Player(board, x, y, icon) {
 
     };
 
-    this.justify = (dx,dy) =>{
-        if (dy===0){
-            let offset = parseFloat(this.div.style.left) -this.relativeDistance(this.y);
-            if (offset>=this.step){
-                this.div.style.left = parseFloat(this.div.style.left) -  this.step + 'em';
-            }
-            else if (offset <= -this.step){
-                this.div.style.left = parseFloat(this.div.style.left) +  this.step + 'em';
+    this.justify = (dx, dy) => {
+        let rate = 1;
+        if (dy === 0) {
+            let offset = parseFloat(this.div.style.left) - this.relativeDistance(this.y);
+            if (offset >= rate * this.step) {
+                this.div.style.left = parseFloat(this.div.style.left) - rate * this.step + 'em';
+            } else if (offset <= -this.step) {
+                this.div.style.left = parseFloat(this.div.style.left) + rate * this.step + 'em';
             }
         }
-        if (dx===0){
-            let offset = parseFloat(this.div.style.top) -this.relativeDistance(this.x);
-            if (offset>=this.step){
-                this.div.style.top = parseFloat(this.div.style.top) -  this.step + 'em';
+        if (dx === 0) {
+            let offset = parseFloat(this.div.style.top) - this.relativeDistance(this.x);
+            if (offset >= rate * this.step) {
+                this.div.style.top = parseFloat(this.div.style.top) - rate * this.step + 'em';
+            } else if (offset <= -this.step) {
+                this.div.style.top = parseFloat(this.div.style.top) + rate * this.step + 'em';
             }
-            else if (offset <= -this.step){
-                this.div.style.top = parseFloat(this.div.style.top) +  this.step + 'em';
+        }
+    };
+
+    this.containsBlock = (x, y) => {
+        return this.board.cells[x][y].classList.contains('block');
+    };
+
+    this.moveAction = (tempX, tempY, percentage = 0.5) => {
+
+        if (Math.abs(parseFloat(this.div.style.left) - this.relativeDistance(this.y)) > percentage * this.board.cellSize ||
+            Math.abs(parseFloat(this.div.style.top) - this.relativeDistance(this.x)) > percentage * this.board.cellSize) {
+
+            this.board.cells[this.x][this.y].player = null;
+
+            if (Math.abs(parseFloat(this.div.style.left) - this.relativeDistance(this.y)) > percentage * this.board.cellSize) {
+                this.y = tempY;
             }
+            if (Math.abs(parseFloat(this.div.style.top) - this.relativeDistance(this.x)) > percentage * this.board.cellSize) {
+                this.x = tempX;
+            }
+
+
+            this.board.cells[this.x][this.y].player = this;
+            if (this.board.cells[this.x][this.y].loot !== null) {
+                this.board.cells[this.x][this.y].loot.collected();
+            }
+            console.log(this.x, this.y);
+            console.log(this.div.style.top, this.div.style.left);
         }
     };
 
@@ -306,44 +335,63 @@ function Player(board, x, y, icon) {
         let tempX = this.x + dx;
         let tempY = this.y + dy;
 
-        if (tempX >= 0 && tempX <= Size.COL - 1 && tempY >= 0 && tempY <= Size.ROW - 1 &&
-            !this.board.cells[tempX][tempY].classList.contains('block')) {
-            this.div.style.left = parseFloat(this.div.style.left) + dy * this.step + 'em';
-            this.div.style.top = parseFloat(this.div.style.top) + dx * this.step + 'em';
+        if (tempX >= 0 && tempX <= Size.COL - 1 && tempY >= 0 && tempY <= Size.ROW - 1) {
 
-            this.justify(dx,dy);
-            if (Math.abs(parseFloat(this.div.style.left) -this.relativeDistance(this.y)) > 0.5 * this.board.cellSize ||
-                Math.abs(parseFloat(this.div.style.top) -  this.relativeDistance(this.x)) > 0.5 * this.board.cellSize) {
+            if (!this.containsBlock(tempX, tempY)) {
+                this.div.style.left = parseFloat(this.div.style.left) + dy * this.step + 'em';
+                this.div.style.top = parseFloat(this.div.style.top) + dx * this.step + 'em';
 
-                this.board.cells[this.x][this.y].player = null;
+                this.justify(dx, dy);
+                this.moveAction(tempX, tempY);
 
-                if (Math.abs(parseFloat(this.div.style.left) - this.relativeDistance(this.y)) > 0.5 * this.board.cellSize) {
-                    this.y = tempY;
-                }
-                if (Math.abs(parseFloat(this.div.style.top) - this.relativeDistance(this.x)) > 0.5 * this.board.cellSize) {
-                    this.x = tempX;
-                }
-                // console.log(this.x,this.y);
-                // console.log(this.div.style.top,this.div.style.left);
+                return true;
 
-                this.board.cells[this.x][this.y].player = this;
-                if (this.board.cells[this.x][this.y].loot !== null) {
-                    this.board.cells[this.x][this.y].loot.collected();
+            } else {
+
+                this.edgeMovement(dx, dy, 2);
+
+
+                if (parseFloat(this.div.style.left) - this.relativeDistance(this.y) > 3 * this.step && !this.containsBlock(tempX, tempY + 1)) {
+                    this.div.style.left = parseFloat(this.div.style.left) + this.step + 'em';
+                    this.moveAction(this.x, this.y + 1, 0.7);
 
                 }
+                if (parseFloat(this.div.style.left) - this.relativeDistance(this.y) < -3 * this.step && !this.containsBlock(tempX, tempY - 1)) {
+                    this.div.style.left = parseFloat(this.div.style.left) - this.step + 'em';
+                    this.moveAction(this.x, this.y - 1, 0.7);
+
+                }
+
+
+                if (parseFloat(this.div.style.top) - this.relativeDistance(this.x) > 3 * this.step && !this.containsBlock(tempX + 1, tempY)) {
+                    this.div.style.top = parseFloat(this.div.style.top) + this.step + 'em';
+                    this.moveAction(this.x + 1, this.y, 0.7);
+
+                }
+                if (parseFloat(this.div.style.top) - this.relativeDistance(this.x) < -3 * this.step && !this.containsBlock(tempX - 1, tempY)) {
+                    this.div.style.top = parseFloat(this.div.style.top) - this.step + 'em';
+                    this.moveAction(this.x - 1, this.y, 0.7);
+
+                }
+                return false;
+
 
             }
+        } else {
+            this.edgeMovement(dx, dy);
+            return false;
         }
 
-        else if (Math.abs(parseFloat(this.div.style.left) -this.relativeDistance(this.y)) >=0.1 ){
-            this.div.style.left = parseFloat(this.div.style.left) + dy * 0.05 + 'em';
-            // this.justify(dx,dy);
-        }
-        else if ( Math.abs(parseFloat(this.div.style.top) -  this.relativeDistance(this.x)) >= 0.1){
-            this.div.style.top = parseFloat(this.div.style.top) + dx * 0.05 + 'em';
-            // this.justify(dx,dy);
-        }
 
+    };
+
+    this.edgeMovement = (dx, dy, rate = 1) => {
+        if (Math.abs(parseFloat(this.div.style.left) - this.relativeDistance(this.y)) >= rate * this.step) {
+            this.div.style.left = parseFloat(this.div.style.left) + rate * dy * this.step + 'em';
+        }
+        if (Math.abs(parseFloat(this.div.style.top) - this.relativeDistance(this.x)) >= rate * this.step) {
+            this.div.style.top = parseFloat(this.div.style.top) + rate * dx * this.step + 'em';
+        }
 
     };
 
@@ -493,8 +541,12 @@ function keyDownListener(eventCode, eventWhich, direction, player) {
     if (event.code === eventCode || event.which === eventWhich) { // browser compatibility
         event.preventDefault();
         player.control[direction] = true;
+        if (player.lastKey !== direction) {
+            player.secondLastKey = player.lastKey;
+            player.lastKey = direction;
+        }
         player.lastKey = direction;
-        // console.log('keydown');
+
     }
 
 }
