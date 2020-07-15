@@ -61,8 +61,10 @@ function keyup(event) {
 function main() {
     let board = new Board();
     board.initialize();
+    board.dog.updateDisplay();
+    board.cat.updateDisplay();
+
     window.board = board;
-    initializeDisplay();
 
     document.addEventListener('keydown', keydown);
     document.addEventListener('keyup', keyup);
@@ -70,17 +72,17 @@ function main() {
 }
 
 
-function initializeDisplay() {
-    document.getElementById('dog_health').innerText = window.board.dog.lives;
-    document.getElementById('dog_speed').innerText = window.board.dog.speed;
-    document.getElementById('dog_bombNumber').innerText = window.board.dog.bombs;
-    document.getElementById('dog_bombRange').innerText = window.board.dog.bombRange;
-
-    document.getElementById('cat_health').innerText = window.board.cat.lives;
-    document.getElementById('cat_speed').innerText = window.board.cat.speed;
-    document.getElementById('cat_bombNumber').innerText = window.board.cat.bombs;
-    document.getElementById('cat_bombRange').innerText = window.board.cat.bombRange;
-}
+// function initializeDisplay() {
+//     document.getElementById('dog_health').innerText = window.board.dog.lives;
+//     document.getElementById('dog_speed').innerText = window.board.dog.speed;
+//     document.getElementById('dog_bombNumber').innerText = window.board.dog.bombs;
+//     document.getElementById('dog_bombRange').innerText = window.board.dog.bombRange;
+//
+//     document.getElementById('cat_health').innerText = window.board.cat.lives;
+//     document.getElementById('cat_speed').innerText = window.board.cat.speed;
+//     document.getElementById('cat_bombNumber').innerText = window.board.cat.bombs;
+//     document.getElementById('cat_bombRange').innerText = window.board.cat.bombRange;
+// }
 
 
 function Board() {
@@ -136,10 +138,10 @@ function Board() {
         for (let i = 0; i < this.ROW; i++) {
             for (let j = 0; j < this.COL; j++) {
                 if (!this.cells[i][j].classList.contains('block')
-                    && !(i === this.dog.x && j === this.dog.y)
-                    && !(i === this.cat.x && j === this.cat.y)
-                    && !(i === this.dog.x - 1 || i === this.cat.x + 1)
-                    && !(j === this.dog.y - 1 || j === this.cat.y + 1)
+                    && !(i === this.dog.getX() && j === this.dog.getY())
+                    && !(i === this.cat.getX() && j === this.cat.getY())
+                    && !(i === this.dog.getX() - 1 || i === this.cat.getX() + 1)
+                    && !(j === this.dog.getY() - 1 || j === this.cat.getY() + 1)
                     && Math.random() * 10 > 8.5
                 ) {
                     this.cells[i][j].classList.add('block', 'loot');
@@ -170,7 +172,7 @@ function Loot(x, y, board) {
         if (this.prop === 'Health') {
             board.cells[x][y].player.lives += 1;
             // console.log(board.cells[x][y].player.lives,board.cells[x][y].player.div);
-        } else if (this.prop === 'Speed' && board.cells[x][y].player.step <= 0.1) {
+        } else if (this.prop === 'Speed' && board.cells[x][y].player.step <= 0.15) {
             board.cells[x][y].player.speed += 1;
             board.cells[x][y].player.step += 0.01;
             // console.log('top linear ' + board.cells[x][y].player.walkInterval + 'ms ,left linear ' +board.cells[x][y].player.walkInterval + 'ms,,opacity ease-in-out 1000ms');
@@ -193,8 +195,7 @@ function Loot(x, y, board) {
 }
 
 function Player(board, x, y, icon) {
-    this.x = x;
-    this.y = y;
+
     this.speed = 1;
     this.fuseTime = 1400;
     this.bombRange = 2;
@@ -221,8 +222,24 @@ function Player(board, x, y, icon) {
         return (x + 1) * this.board.cellSize + 0.2;
     };
 
-    this.div.style.left = this.relativeDistance(this.x) + 'em';
-    this.div.style.top = this.relativeDistance(this.y) + 'em';
+    this.updateMoveDisplay = () => {
+        this.div.style.left = this.left + 'em';
+        this.div.style.top = this.top + 'em';
+    };
+
+    this.top = this.relativeDistance(x);
+    this.left = this.relativeDistance(y);
+
+    this.updateMoveDisplay();
+
+    this.getX = () => {
+        return Math.round((this.top - 0.2) / this.board.cellSize) - 1;
+    };
+
+    this.getY = () => {
+        return Math.round((this.left - 0.2) / this.board.cellSize) - 1;
+    };
+
 
     this.initialize = () => {
         this.bombInterval = setInterval(() => {
@@ -241,23 +258,27 @@ function Player(board, x, y, icon) {
             }
             if (trueDir.length > 0) {
                 if (trueDir.length === 1) {
-                    this.move(...directionDict[trueDir[0]]);
+                    if (this.checkMovable(...directionDict[trueDir[0]])) {
+                        this.move(...directionDict[trueDir[0]]);
+                        this.updateMoveDisplay();
+                    } else {
+                        this.assistedMove(...directionDict[trueDir[0]]);
+                        this.updateMoveDisplay();
+                    }
+
                 } else {
 
+                    if (trueDir.includes(this.lastKey) && this.checkMovable(...directionDict[this.lastKey])) {
+                        this.move(...directionDict[this.lastKey]);
+                        this.updateMoveDisplay();
+                    } else if (trueDir.includes(this.secondLastKey) && this.checkMovable(...directionDict[this.secondLastKey])) {
 
-                    if (trueDir.includes(this.lastKey) && this.move(...directionDict[this.lastKey])) {
+                        this.move(...directionDict[this.secondLastKey]);
+                        this.updateMoveDisplay();
 
                     }
-                    else{
-                        if (trueDir.includes(this.secondLastKey)){
-                            this.move(...directionDict[this.secondLastKey])
-                        }
-                    }
-
-
                 }
             }
-
 
             if (this.lives <= 0) {
                 clearInterval(this.moveInterval);
@@ -270,8 +291,8 @@ function Player(board, x, y, icon) {
 
     this.placeBomb = () => {
 
-        let tempX = this.x;
-        let tempY = this.y;
+        let tempX = this.getX();
+        let tempY = this.getY();
         if (!this.board.cells[tempX][tempY].classList.contains('bomb') && this.bombs > 0) {
             this.bombs -= 1;
             this.board.cells[tempX][tempY].classList.add('block', 'bomb');
@@ -282,118 +303,111 @@ function Player(board, x, y, icon) {
 
     };
 
-    this.justify = (dx, dy) => {
-        let rate = 1;
-        if (dy === 0) {
-            let offset = parseFloat(this.div.style.left) - this.relativeDistance(this.y);
-            if (offset >= rate * this.step) {
-                this.div.style.left = parseFloat(this.div.style.left) - rate * this.step + 'em';
-            } else if (offset <= -this.step) {
-                this.div.style.left = parseFloat(this.div.style.left) + rate * this.step + 'em';
-            }
-        }
-        if (dx === 0) {
-            let offset = parseFloat(this.div.style.top) - this.relativeDistance(this.x);
-            if (offset >= rate * this.step) {
-                this.div.style.top = parseFloat(this.div.style.top) - rate * this.step + 'em';
-            } else if (offset <= -this.step) {
-                this.div.style.top = parseFloat(this.div.style.top) + rate * this.step + 'em';
-            }
-        }
-    };
-
     this.containsBlock = (x, y) => {
         return this.board.cells[x][y].classList.contains('block');
     };
 
-    this.moveAction = (tempX, tempY, percentage = 0.5) => {
 
-        if (Math.abs(parseFloat(this.div.style.left) - this.relativeDistance(this.y)) > percentage * this.board.cellSize ||
-            Math.abs(parseFloat(this.div.style.top) - this.relativeDistance(this.x)) > percentage * this.board.cellSize) {
-
-            this.board.cells[this.x][this.y].player = null;
-            this.board.cells[this.x][this.y].style.backgroundColor= 'white';
-            if (Math.abs(parseFloat(this.div.style.left) - this.relativeDistance(this.y)) > percentage * this.board.cellSize) {
-                this.y = tempY;
-            }
-            if (Math.abs(parseFloat(this.div.style.top) - this.relativeDistance(this.x)) > percentage * this.board.cellSize) {
-                this.x = tempX;
-            }
-
-
-            this.board.cells[this.x][this.y].player = this;
-            this.board.cells[this.x][this.y].style.backgroundColor= 'green';
-            if (this.board.cells[this.x][this.y].loot !== null) {
-                this.board.cells[this.x][this.y].loot.collected();
-            }
-
-
-            console.log(this.x, this.y);
-            console.log(this.div.style.top, this.div.style.left);
-        }
-    };
-
-
-    this.move = (dx, dy) => { // in css size of .cell 2em
-        let tempX = this.x + dx;
-        let tempY = this.y + dy;
-
-        if (tempX >= 0 && tempX <= Size.COL - 1 && tempY >= 0 && tempY <= Size.ROW - 1) {
-
-            if (!this.containsBlock(tempX, tempY)) {
-                this.div.style.left = parseFloat(this.div.style.left) + dy * this.step + 'em';
-                this.div.style.top = parseFloat(this.div.style.top) + dx * this.step + 'em';
-
-                this.justify(dx, dy);
-                this.moveAction(tempX, tempY);
-
+    this.checkMovable = (dx, dy) => {
+        let currentX = this.getX();
+        let currentY = this.getY();
+        let nextX = currentX + dx;
+        let nextY = currentY + dy;
+        // nextX >= 0 && nextX <= Size.COL - 1 && nextY >= 0 && nextY <= Size.ROW - 1
+        if (this.checkWithinGrid(nextX, nextY)) {
+            if (!this.containsBlock(nextX, nextY)) {
                 return true;
-
+            } else if (this.checkNotInCell(dx, dy)) {
+                return true;
             } else {
-
-                this.edgeMovement(dx, dy, 2);
-
-
-                if (parseFloat(this.div.style.left) - this.relativeDistance(this.y) > 3 * this.step && !this.containsBlock(tempX, tempY + 1)) {
-                    this.div.style.left = parseFloat(this.div.style.left) + this.step + 'em';
-                    this.moveAction(this.x, this.y + 1, 0.7);
-
-                }
-                if (parseFloat(this.div.style.left) - this.relativeDistance(this.y) < -3 * this.step && !this.containsBlock(tempX, tempY - 1)) {
-                    this.div.style.left = parseFloat(this.div.style.left) - this.step + 'em';
-                    this.moveAction(this.x, this.y - 1, 0.7);
-
-                }
-
-
-                if (parseFloat(this.div.style.top) - this.relativeDistance(this.x) > 3 * this.step && !this.containsBlock(tempX + 1, tempY)) {
-                    this.div.style.top = parseFloat(this.div.style.top) + this.step + 'em';
-                    this.moveAction(this.x + 1, this.y, 0.7);
-
-                }
-                if (parseFloat(this.div.style.top) - this.relativeDistance(this.x) < -3 * this.step && !this.containsBlock(tempX - 1, tempY)) {
-                    this.div.style.top = parseFloat(this.div.style.top) - this.step + 'em';
-                    this.moveAction(this.x - 1, this.y, 0.7);
-
-                }
                 return false;
-
-
             }
+        } else if (this.checkNotInCell(dx, dy)) {
+            return true;
         } else {
-            this.edgeMovement(dx, dy);
             return false;
         }
 
+    };
+
+    this.checkNotInCell = (dx, dy) => {
+        if (dy === 0) {
+            return Math.abs(this.top - this.relativeDistance(this.getX())) >= this.step;
+        } else if (dx === 0) {
+            return Math.abs(this.left - this.relativeDistance(this.getY())) >= this.step;
+        }
 
     };
 
-    this.edgeMovement = (dx, dy, rate = 1) => {
-        if (Math.abs(parseFloat(this.div.style.left) - this.relativeDistance(this.y)) >= rate * this.step) {
-            this.div.style.left = parseFloat(this.div.style.left) + rate * dy * this.step + 'em';
+
+    this.move = (dx, dy) => {
+        this.board.cells[this.getX()][this.getY()].player = null;
+        this.board.cells[this.getX()][this.getY()].style.backgroundColor = 'white';
+        if (dy === 0) { // vertical movement
+            let offset = this.left - this.relativeDistance(this.getY());
+            if (offset >= this.step) {
+                this.left = this.left - this.step;
+            } else if (offset <= -this.step) {
+                this.left = this.left + this.step;
+            } else {
+                this.top = this.top + dx * this.step;
+            }
+        } else if (dx === 0) { // horizontal movement
+            let offset = this.top - this.relativeDistance(this.getX());
+            if (offset >= this.step) {
+                this.top = this.top - this.step;
+            } else if (offset <= -this.step) {
+                this.top = this.top + this.step;
+            } else {
+                this.left = this.left + dy * this.step;
+
+            }
         }
-        if (Math.abs(parseFloat(this.div.style.top) - this.relativeDistance(this.x)) >= rate * this.step) {
-            this.div.style.top = parseFloat(this.div.style.top) + rate * dx * this.step + 'em';
+
+        this.board.cells[this.getX()][this.getY()].player = this;
+        this.board.cells[this.getX()][this.getY()].style.backgroundColor = 'green';
+
+
+        this.collectLoot();
+
+
+    };
+
+    this.checkWithinGrid = (x, y) => {
+        return x >= 0 && x <= Size.COL - 1 && y >= 0 && y <= Size.ROW - 1;
+    };
+
+    this.assistedMove = (dx, dy) => {
+        let currentX = this.getX();
+        let currentY = this.getY();
+        let nextX = currentX + dx;
+        let nextY = currentY + dy;
+
+        this.board.cells[this.getX()][this.getY()].player = null;
+        this.board.cells[this.getX()][this.getY()].style.backgroundColor = 'white';
+
+        if (this.left - this.relativeDistance(this.getY()) > 3 * this.step && this.checkWithinGrid(nextX, nextY + 1) && !this.containsBlock(nextX, nextY + 1)) {
+            this.left = this.left + this.step;
+
+        } else if (this.left - this.relativeDistance(this.getY()) < -3 * this.step && this.checkWithinGrid(nextX, nextY - 1) && !this.containsBlock(nextX, nextY - 1)) {
+            this.left = this.left - this.step;
+
+
+        } else if (this.top - this.relativeDistance(this.getX()) > 3 * this.step && this.checkWithinGrid(nextX + 1, nextY) && !this.containsBlock(nextX + 1, nextY)) {
+            this.top = this.top + this.step;
+
+
+        } else if (this.top - this.relativeDistance(this.getX()) < -3 * this.step && this.checkWithinGrid(nextX - 1, nextY) && !this.containsBlock(nextX - 1, nextY)) {
+            this.top = this.top - this.step;
+        }
+
+        this.board.cells[this.getX()][this.getY()].player = this;
+        this.board.cells[this.getX()][this.getY()].style.backgroundColor = 'green';
+    };
+
+    this.collectLoot = () => {
+        if (this.board.cells[this.getX()][this.getY()].loot !== null) {
+            this.board.cells[this.getX()][this.getY()].loot.collected();
         }
 
     };
@@ -426,6 +440,7 @@ function Player(board, x, y, icon) {
             this.invincible = false;
             clearInterval(white);
             clearInterval(red);
+            this.div.style.backgroundColor ='';
             this.div.classList.remove('animate__animated', 'animate__tada');
         }, 1000);
 
@@ -464,10 +479,10 @@ function Bomb(x, y, player, board) {
     };
 
     this.checkPlayerBombed = (x, y) => {
-        if (board.cat.x === x && board.cat.y === y && board.cat.invincible === false) {
+        if (board.cat.getX() === x && board.cat.getY() === y && board.cat.invincible === false) {
             board.cat.injured();
         }
-        if (board.dog.x === x && board.dog.y === y && board.dog.invincible === false) {
+        if (board.dog.getX() === x && board.dog.getY() === y && board.dog.invincible === false) {
             board.dog.injured();
         }
     };
@@ -518,9 +533,12 @@ function keyDownListener(eventCode, eventWhich, direction, player) {
     if (event.code === eventCode || event.which === eventWhich) { // browser compatibility
         event.preventDefault();
         player.control[direction] = true;
+        console.log(direction);
+        // console.log(player.lastKey, direction);
         if (player.lastKey !== direction) {
             player.secondLastKey = player.lastKey;
             player.lastKey = direction;
+            // console.log('in if', player.lastKey, player.secondLastKey);
         }
 
 
