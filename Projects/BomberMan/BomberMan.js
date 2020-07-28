@@ -72,19 +72,6 @@ function main() {
 }
 
 
-// function initializeDisplay() {
-//     document.getElementById('dog_health').innerText = window.board.dog.lives;
-//     document.getElementById('dog_speed').innerText = window.board.dog.speed;
-//     document.getElementById('dog_bombNumber').innerText = window.board.dog.bombs;
-//     document.getElementById('dog_bombRange').innerText = window.board.dog.bombRange;
-//
-//     document.getElementById('cat_health').innerText = window.board.cat.lives;
-//     document.getElementById('cat_speed').innerText = window.board.cat.speed;
-//     document.getElementById('cat_bombNumber').innerText = window.board.cat.bombs;
-//     document.getElementById('cat_bombRange').innerText = window.board.cat.bombRange;
-// }
-
-
 function Board() {
     this.container = document.querySelector('#battleground');
     this.ROW = Size.ROW;
@@ -142,7 +129,7 @@ function Board() {
                     && !(i === this.cat.getX() && j === this.cat.getY())
                     && !(i === this.dog.getX() - 1 || i === this.cat.getX() + 1)
                     && !(j === this.dog.getY() - 1 || j === this.cat.getY() + 1)
-                    && Math.random() * 10 > 8.5
+                    && Math.random() * 10 > 7.5
                 ) {
                     this.cells[i][j].classList.add('block', 'loot');
                     this.cells[i][j].innerHTML = '<i class="fas fa-cubes"></i>';
@@ -175,9 +162,6 @@ function Loot(x, y, board) {
         } else if (this.prop === 'Speed' && board.cells[x][y].player.step <= 0.15) {
             board.cells[x][y].player.speed += 1;
             board.cells[x][y].player.step += 0.01;
-            // console.log('top linear ' + board.cells[x][y].player.walkInterval + 'ms ,left linear ' +board.cells[x][y].player.walkInterval + 'ms,,opacity ease-in-out 1000ms');
-            // board.cells[x][y].player.div.style.transition = 'top linear ' + board.cells[x][y].player.walkInterval + 'ms ,left linear ' + board.cells[x][y].player.walkInterval + 'ms,opacity ease-in-out 1000ms';
-
 
         } else if (this.prop === 'Bombs') {
             board.cells[x][y].player.bombs += 1;
@@ -230,6 +214,7 @@ function Player(board, x, y, icon) {
     this.top = this.relativeDistance(x);
     this.left = this.relativeDistance(y);
 
+
     this.updateMoveDisplay();
 
     this.getX = () => {
@@ -247,7 +232,7 @@ function Player(board, x, y, icon) {
                 this.placeBomb();
 
             }
-        }, 20);
+        }, 100);
 
         this.moveInterval = setInterval(() => {
             let trueDir = [];
@@ -260,24 +245,26 @@ function Player(board, x, y, icon) {
                 if (trueDir.length === 1) {
                     if (this.checkMovable(...directionDict[trueDir[0]])) {
                         this.move(...directionDict[trueDir[0]]);
-                        this.updateMoveDisplay();
                     } else {
                         this.assistedMove(...directionDict[trueDir[0]]);
-                        this.updateMoveDisplay();
                     }
 
                 } else {
 
                     if (trueDir.includes(this.lastKey) && this.checkMovable(...directionDict[this.lastKey])) {
                         this.move(...directionDict[this.lastKey]);
-                        this.updateMoveDisplay();
-                    } else if (trueDir.includes(this.secondLastKey) && this.checkMovable(...directionDict[this.secondLastKey])) {
+
+                    } else if (trueDir.includes(this.secondLastKey)
+                        && !this.isOppositeKeys(this.lastKey,this.secondLastKey)
+                        && this.checkMovable(...directionDict[this.secondLastKey])) {
 
                         this.move(...directionDict[this.secondLastKey]);
-                        this.updateMoveDisplay();
 
                     }
                 }
+                this.updateMoveDisplay();
+                
+
             }
 
             if (this.lives <= 0) {
@@ -286,6 +273,13 @@ function Player(board, x, y, icon) {
 
         }, 10);
 
+    };
+
+    this.isOppositeKeys = (key1,key2) =>{
+        let dir1 = directionDict[key1];
+        let dir2 = directionDict[key2];
+
+        return dir1[0]+dir2[0] ===0 && dir1[1]+dir2[1] ===0;
     };
 
 
@@ -360,7 +354,6 @@ function Player(board, x, y, icon) {
                 this.top = this.top + this.step;
             } else {
                 this.left = this.left + dy * this.step;
-
             }
         }
 
@@ -440,7 +433,7 @@ function Player(board, x, y, icon) {
             this.invincible = false;
             clearInterval(white);
             clearInterval(red);
-            this.div.style.backgroundColor ='';
+            this.div.style.backgroundColor = '';
             this.div.classList.remove('animate__animated', 'animate__tada');
         }, 1000);
 
