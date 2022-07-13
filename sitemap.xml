@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 ">
+    <url>
+        <loc>https://zifengallen.me/index.html</loc>
+        <lastmod>2022-07-12</lastmod>
+    </url>
+    <url>
+        <loc>https://zifengallen.me/Projects/projects.html</loc>
+        <lastmod>2022-07-12</lastmod>
+    </url>
+    <url>
+        <loc>https://zifengallen.me/Projects/MazeGenerator/MazeGenerator.html</loc>
+        <lastmod>2022-07-12</lastmod>
+    </url>
+    <url>
+        <loc>https://zifengallen.me/Projects/Collisions/collisions.html</loc>
+        <lastmod>2022-07-12</lastmod>
+    </url>
+    <url>
+        <loc>https://zifengallen.me/Projects/DirtyPaintBalls/paintballs.html</loc>
+        <lastmod>2022-07-12</lastmod>
+    </url>
+    <url>
+        <loc>https://zifengallen.me/Projects/BomberMan/BomberMan.html</loc>
+        <lastmod>2022-07-12</lastmod>
+    </url>
+    <url>
+        <loc>https://zifengallen.me/Projects/FlappyBird/FlappyBird.html</loc>
+        <lastmod>2022-07-12</lastmod>
+    </url>
+    <url>
+        <loc>https://zifengallen.me/Projects/Reversi/Reversi.html</loc>
+        <lastmod>2022-07-12</lastmod>
+    </url>
+</urlset>
