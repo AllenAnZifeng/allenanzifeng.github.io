@@ -4,6 +4,7 @@
 }
 
 body {
+    display: flex;
     align-items: stretch;
 }
 
@@ -12,9 +13,10 @@ body {
     flex-direction: column;
     flex-wrap: wrap;
     align-items: stretch;
-    flex-grow: 1;
+
 
 }
+
 
 #controlPanel {
     display: flex;
@@ -50,7 +52,7 @@ hr {
     flex-direction: row;
     margin: 2em 1em;
     flex-grow: 1;
-    justify-content: space-around;
+
 
 }
 
@@ -58,40 +60,10 @@ button{
     font-size: 0.8rem !important;
 }
 
-.mazeContainer {
-
-    align-self: center;
+.boardContainer{
     padding: 0.5em 3em 10em 3em;
 }
 
-.row {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-
-}
-
-.cell {
-    min-height: 0.7em;
-    min-width: 0.7em;
-    border: 1px solid lightgrey;
-}
-
-.path {
-    background-color: lightcoral;
-}
-
-.traceBack{
-    background-color: #FFD700;
-}
-
-.solvedPath {
-    background-color: lightblue;
-}
-
-.wall {
-    background-color: black;
-}
 
 @media only screen and (min-width: 800px){
     body{
@@ -103,7 +75,7 @@ button{
         min-width: 500px;
     }
 
-    .mazeContainer {
+    .boardContainer {
         margin-left: 3em;
         align-self: flex-start;
         padding: 0.5em 3em 10em 0;

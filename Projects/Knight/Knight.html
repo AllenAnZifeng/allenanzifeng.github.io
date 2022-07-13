@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Knight</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="icon" href="">
+    <link rel="stylesheet" type="text/css" href="../../HomePage/css/global.css">
+    <link rel="stylesheet" type="text/css" href="Knight.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="Knight.js"></script>
+    <script src="https://kit.fontawesome.com/6670bd51cb.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="contentBody">
+    <div id="controlPanel">
+        <div id="title">Knight's Tour</div>
+        <hr>
+        <div class="inputContainer">
+            <label for="height">Rows:</label>
+            <input id="height" type="number" name="width" value="8" min="3" max="200">
+        </div>
+
+        <div class="inputContainer">
+            <label for="width">Columns:</label>
+            <input id="width" type="number" name="width" value="8" min="3" max="200">
+        </div>
+
+        <div class="inputContainer">
+            <label for="speed">Speed:</label>
+            <input id="speed" type="number" name="width" value="10" min="0" max="10" style="width: 2.5em">
+        </div>
+
+        <div id="buttonContainer">
+            <button type="button" id="generate" class="btn btn-outline-primary" onclick="run()">Generate Tour</button>
+
+        </div>
+
+
+    </div>
+
+    <div class="boardContainer">
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
