@@ -10,9 +10,9 @@ const Size = {
 function run() {
     let button = document.getElementById('generate');
     button.disabled = true;
-    let p = new Promise(((resolve, reject) => {
-        main().then(resolve);
-    }));
+    let p = new Promise((resolve, reject) => {
+        main().then(()=>{resolve()});
+    });
     // console.log('run');
     p.then(r => {
         button.disabled = false
@@ -51,7 +51,6 @@ function Maze(container) {
         if (this.ROW < 2 || this.ROW>200){
             this.ROW = Size.ROW;
             document.getElementById('height').value = this.ROW;
-
         }
         if (this.COL < 2 || this.COL>200){
             this.COL = Size.COL;
@@ -155,7 +154,6 @@ function Maze(container) {
 
             }
         }
-
 
     };
 
