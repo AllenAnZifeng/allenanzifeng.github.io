@@ -65,6 +65,24 @@ button{
 }
 
 
+.row{
+    display: flex;
+    flex-direction: row;
+}
+
+.cell{
+    border: grey 1px solid;
+    border-radius: 10px;
+    height: 38px;
+    width: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1px;
+
+}
+
+
 @media only screen and (min-width: 800px){
     body{
         align-items: flex-start;
