@@ -1,10 +1,5 @@
 'use strict';
 
-const Size = {
-    ROW: 6,
-    COL: 6,
-};
-
 
 function run() {
     let button = document.getElementById('generate');
@@ -92,9 +87,9 @@ function Board(container) {
                 if (!alreadyInPath){
                     res.push(possibleMoves[i]);
                 }
-
             }
         }
+
         return res;
     }
 
@@ -117,7 +112,7 @@ function Board(container) {
         this.cells[knight[0]][knight[1]].classList.add('knight');
 
         await new Promise(r => {
-            setTimeout(r, 500)
+            setTimeout(r, 100)
         });
 
 
@@ -126,12 +121,16 @@ function Board(container) {
         }
 
         let moves = this.validMoves(knight,path);
+        // console.log('valid moves',moves);
+        // console.log('visited path',path);
+
         if (moves.length ===0){
             return null;
         }
 
+
         for (let i = 0; i < moves.length; i++) {
-            let futureMoves = this.move(moves[i],path.concat([moves[i]]));
+            let futureMoves = await this.move(moves[i],path.concat([moves[i]]));
             if ( futureMoves !== null){
                 let res = path.concat([moves[i]]).concat(futureMoves);
                 if (res.length === this.ROW * this.COL){
