@@ -30,6 +30,20 @@ body{
 
 }
 
+.an {
+    height: 1.3rem;
+    margin: 0.9rem 0.5rem 1rem 1rem;
+    width: 1.3rem;
+}
+
+.an:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+.an img {
+    height: 100%;
+    width: 100%;
+}
 .button:hover {
     opacity: 0.7;
     /*color: grey;*/
@@ -106,6 +120,12 @@ body{
         font-size: 22px;
     }
 
+    .an {
+
+        margin: 1.2rem 1rem 1rem 1.5rem;
+
+    }
+
 
     #imgMe {
         height: 14em;
@@ -173,7 +193,7 @@ body{
     animation-duration: 2s;
 }
 
-.iconBox,.button,#name,#quote{
+.iconBox,.button,#name,#quote,.an{
     animation: flipInX;
     animation-duration: 2s;
 }
