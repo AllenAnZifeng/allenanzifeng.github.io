@@ -52,8 +52,8 @@
     <div id="topHeader">
         <div class="an" onclick="window.location='https://allenanzifeng.github.io/index.html'"><img src="HomePage/images/an_inverted.jpg"></div>
         <div class="button" onclick="window.location='https://allenanzifeng.github.io/Projects/projects.html'">Projects</div>
-        <div class="button" onclick="window.location='https://blog.zifengallen.me/'">Blog</div>
-        <div class="button" onclick="window.location='https://book.zifengallen.me/'">Book</div>
+        <div id="blogButton" class="button">Blog</div>
+        <div id="bookButton" class="button">Book</div>
     </div>
     <div id="contentBody">
         <div class="mainDiv">
@@ -79,4 +79,12 @@
 
 
 </body>
+<script>
+    fetch('urls.json')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('blogButton').onclick = function () { window.location = data.blog; };
+            document.getElementById('bookButton').onclick = function () { window.location = data.book; };
+        });
+</script>
 </html>
