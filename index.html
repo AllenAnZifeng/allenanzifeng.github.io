@@ -83,7 +83,7 @@
     fetch('urls.json')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('blogButton').onclick = function () { window.location = data.blog; };
+            // document.getElementById('blogButton').onclick = function () { window.location = data.blog; };
             document.getElementById('bookButton').onclick = function () { window.location = data.book; };
         });
 </script>
